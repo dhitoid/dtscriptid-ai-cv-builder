@@ -1059,9 +1059,11 @@ justify-content:flex-start;
 
 .cv{
 
-width:794px;
-min-height:1123px;
-
+width:210mm;
+min-height:297mm;
+max-width:794px;
+position:relative;
+isolation:isolate;
 transform:scale(.38);
 
 transform-origin:top left;
@@ -1069,6 +1071,15 @@ transform-origin:top left;
 margin-right:-520px;
 margin-bottom:-720px;
 
+}
+
+.section{
+page-break-inside:avoid;
+}
+
+.cv{
+-webkit-font-smoothing:antialiased;
+text-rendering:optimizeLegibility;
 }
 
 .cv.modern{
@@ -1090,6 +1101,73 @@ font-size:22px;
 .live-badge{
 display:none;
 }
+
+}
+
+/* =========================
+LUXE TEMPLATE
+========================= */
+
+.cv.luxe{
+
+display:grid;
+
+grid-template-columns:260px 1fr;
+
+background:#faf7f2;
+
+}
+
+.cv.luxe .cv-sidebar{
+
+background:#111827;
+
+color:white;
+
+padding:60px 30px;
+
+}
+
+.cv.luxe .cv-main{
+
+background:#faf7f2;
+
+padding:60px;
+
+}
+
+.cv.luxe .section-title{
+
+font-size:26px;
+
+color:#111827;
+
+border-bottom:2px solid #111827;
+
+padding-bottom:10px;
+
+margin-bottom:20px;
+
+}
+
+.cv.luxe .tag{
+
+background:#111827;
+color:white;
+
+}
+
+.cv.luxe .cv-name{
+
+font-size:48px;
+
+color:white;
+
+}
+
+.cv.luxe .cv-role{
+
+color:#d1d5db;
 
 }
 
@@ -1436,6 +1514,65 @@ Creative Dark Pro
 
 </div>
 
+<!-- TEMPLATE 4 -->
+
+<div
+class="template-card"
+data-template="luxe"
+onclick="changeTemplate('luxe',this)"
+>
+
+<div class="badge">
+PREMIUM
+</div>
+
+<div class="favorite-btn">
+♡
+</div>
+
+<div class="template-thumb">
+
+<div class="mini-modern">
+
+<div style="
+width:30%;
+background:#111827;
+border-radius:20px;
+"></div>
+
+<div class="mini-modern-right">
+
+<div class="line-dark"></div>
+
+<div class="line"></div>
+
+<div class="line" style="width:60%"></div>
+
+<div class="block"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="template-info">
+
+<div class="template-name">
+Luxe Corporate
+</div>
+
+<div class="template-meta">
+
+<span>Canva</span>
+<span>Premium</span>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 </div>
@@ -1447,13 +1584,17 @@ Creative Dark Pro
 <h3>Export CV</h3>
 
 <button class="primary" onclick="downloadPDF()">
-⬇ Download PDF
+Download PDF
 </button>
 
 <br><br>
 
 <button class="primary" onclick="downloadJPG()">
-🖼 Download JPG
+Download JPG
+</button>
+
+<button class="primary" onclick="downloadPNG()">
+Download PNG
 </button>
 
 </div>
@@ -1483,6 +1624,7 @@ PREVIEW
 <div class="cv-sidebar" id="cvSidebar">
 
 <img
+crossorigin="anonymous"
 src="https://i.ibb.co/4pDNDk1/avatar.png"
 class="avatar"
 id="avatar"
@@ -2145,6 +2287,12 @@ cvSidebar.style.display = 'none'
 
 }
 
+if(type === 'luxe'){
+
+cv.classList.add('luxe')
+
+}
+
 }
 
 /* =========================
@@ -2181,6 +2329,43 @@ applyZoom()
 }
 
 /* =========================
+DOWNLOAD CORE
+========================= */
+
+async function prepareExport(){
+
+showIsland('Preparing export...')
+setProgress(10)
+
+await wait(200)
+
+const originalTransform = cv.style.transform
+const originalBoxShadow = cv.style.boxShadow
+const originalBorderRadius = cv.style.borderRadius
+
+cv.style.transform = 'scale(1)'
+cv.style.boxShadow = 'none'
+cv.style.borderRadius = '0px'
+
+await wait(300)
+
+return {
+originalTransform,
+originalBoxShadow,
+originalBorderRadius
+}
+
+}
+
+function restoreExport(state){
+
+cv.style.transform = state.originalTransform
+cv.style.boxShadow = state.originalBoxShadow
+cv.style.borderRadius = state.originalBorderRadius
+
+}
+
+/* =========================
 DOWNLOAD PDF
 ========================= */
 
@@ -2188,25 +2373,17 @@ async function downloadPDF(){
 
 try{
 
+const state = await prepareExport()
+
 showIsland('Generating PDF...')
-setProgress(20)
+setProgress(25)
 
-const originalTransform =
-cv.style.transform
-
-cv.style.transform = 'scale(1)'
-
-await wait(500)
-
-setProgress(50)
-
-await html2pdf()
-.set({
+const opt = {
 
 margin:0,
 
 filename:
-(getValue('name') || 'CV') + '.pdf',
+`${getValue('name') || 'CV'}-DTScriptID.pdf`,
 
 image:{
 type:'jpeg',
@@ -2214,42 +2391,61 @@ quality:1
 },
 
 html2canvas:{
-scale:3,
+
+scale:4,
+
 useCORS:true,
-letterRendering:true
+
+allowTaint:true,
+
+letterRendering:true,
+
+logging:false,
+
+backgroundColor:'#ffffff',
+
+scrollX:0,
+scrollY:0
+
 },
 
 jsPDF:{
-unit:'mm',
-format:'a4',
-orientation:'portrait'
-},
 
-pagebreak:{
-mode:['avoid-all']
+unit:'mm',
+
+format:'a4',
+
+orientation:'portrait',
+
+compress:true
+
 }
 
-})
+}
+
+setProgress(60)
+
+await html2pdf()
+.set(opt)
 .from(cv)
 .save()
 
-cv.style.transform =
-originalTransform
-
 setProgress(100)
+
+restoreExport(state)
 
 setTimeout(()=>{
 
 hideIsland()
 setProgress(0)
 
-},1000)
+},1200)
 
 }catch(err){
 
-console.log(err)
+console.error(err)
 
-alert('Gagal generate PDF')
+alert('PDF gagal dibuat')
 
 hideIsland()
 
@@ -2265,47 +2461,50 @@ async function downloadJPG(){
 
 try{
 
+const state = await prepareExport()
+
 showIsland('Generating JPG...')
 setProgress(30)
 
-const originalTransform =
-cv.style.transform
+const canvas = await html2canvas(cv,{
 
-cv.style.transform = 'scale(1)'
+scale:4,
 
-await wait(300)
-
-const canvas =
-await html2canvas(cv,{
-
-scale:3,
 useCORS:true,
-backgroundColor:null
+
+allowTaint:true,
+
+backgroundColor:'#ffffff',
+
+scrollX:0,
+scrollY:0
 
 })
 
-setProgress(80)
+setProgress(75)
+
+canvas.toBlob(function(blob){
 
 const link =
 document.createElement('a')
 
 link.download =
-(getValue('name') || 'CV') + '.jpg'
+`${getValue('name') || 'CV'}-DTScriptID.jpg`
 
 link.href =
-canvas.toDataURL(
-'image/jpeg',
-1
-)
+URL.createObjectURL(blob)
 
 document.body.appendChild(link)
 
 link.click()
 
-document.body.removeChild(link)
+link.remove()
 
-cv.style.transform =
-originalTransform
+URL.revokeObjectURL(link.href)
+
+},'image/jpeg',1)
+
+restoreExport(state)
 
 setProgress(100)
 
@@ -2314,13 +2513,84 @@ setTimeout(()=>{
 hideIsland()
 setProgress(0)
 
-},1000)
+},1200)
 
 }catch(err){
 
-console.log(err)
+console.error(err)
 
-alert('Gagal generate JPG')
+alert('JPG gagal dibuat')
+
+hideIsland()
+
+}
+
+}
+
+/* =========================
+DOWNLOAD PNG
+========================= */
+
+async function downloadPNG(){
+
+try{
+
+const state = await prepareExport()
+
+showIsland('Generating PNG...')
+setProgress(30)
+
+const canvas = await html2canvas(cv,{
+
+scale:4,
+
+useCORS:true,
+
+allowTaint:true,
+
+backgroundColor:'#ffffff'
+
+})
+
+setProgress(75)
+
+canvas.toBlob(function(blob){
+
+const link =
+document.createElement('a')
+
+link.download =
+`${getValue('name') || 'CV'}-DTScriptID.png`
+
+link.href =
+URL.createObjectURL(blob)
+
+document.body.appendChild(link)
+
+link.click()
+
+link.remove()
+
+URL.revokeObjectURL(link.href)
+
+},'image/png')
+
+restoreExport(state)
+
+setProgress(100)
+
+setTimeout(()=>{
+
+hideIsland()
+setProgress(0)
+
+},1200)
+
+}catch(err){
+
+console.error(err)
+
+alert('PNG gagal dibuat')
 
 hideIsland()
 
