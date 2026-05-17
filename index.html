@@ -15,6 +15,7 @@ rel="stylesheet"
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 
@@ -1171,6 +1172,126 @@ color:#d1d5db;
 
 }
 
+/* =========================
+TOKYO TEMPLATE
+========================= */
+
+.cv.tokyo{
+display:grid;
+grid-template-columns:220px 1fr;
+background:#ffffff;
+}
+
+.cv.tokyo .cv-sidebar{
+background:#0f172a;
+padding:50px 24px;
+color:white;
+}
+
+.cv.tokyo .cv-main{
+padding:55px;
+background:white;
+}
+
+.cv.tokyo .section-title{
+font-size:18px;
+text-transform:uppercase;
+letter-spacing:2px;
+color:#7c3aed;
+margin-bottom:18px;
+}
+
+.cv.tokyo .tag{
+background:#ede9fe;
+color:#6d28d9;
+}
+
+/* =========================
+GLASS TEMPLATE
+========================= */
+
+.cv.glass{
+background:
+linear-gradient(
+135deg,
+rgba(255,255,255,.7),
+rgba(255,255,255,.4)
+);
+
+backdrop-filter:blur(30px);
+
+padding:60px;
+}
+
+.cv.glass .section-title{
+color:#06b6d4;
+}
+
+.cv.glass .tag{
+background:#111827;
+color:white;
+}
+
+/* =========================
+EDITORIAL TEMPLATE
+========================= */
+
+.cv.editorial{
+padding:70px;
+background:#fff;
+}
+
+.cv.editorial .cv-name{
+font-size:68px;
+line-height:0.9;
+max-width:500px;
+}
+
+.cv.editorial .cv-role{
+font-size:20px;
+color:#6b7280;
+margin-bottom:50px;
+}
+
+.cv.editorial .section-title{
+font-size:14px;
+letter-spacing:3px;
+text-transform:uppercase;
+color:#111827;
+border-bottom:1px solid #ddd;
+padding-bottom:10px;
+}
+
+.cv.editorial .tag{
+background:#f3f4f6;
+}
+
+/* =========================
+NEON TEMPLATE
+========================= */
+
+.cv.neon{
+background:#050816;
+padding:60px;
+color:white;
+}
+
+.cv.neon .cv-name{
+background:linear-gradient(135deg,#06b6d4,#7c3aed);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.cv.neon .section-title{
+color:#06b6d4;
+}
+
+.cv.neon .tag{
+background:#111827;
+border:1px solid #06b6d4;
+color:#06b6d4;
+}
+
 </style>
 </head>
 
@@ -1566,6 +1687,170 @@ Luxe Corporate
 
 <span>Canva</span>
 <span>Premium</span>
+
+</div>
+
+</div>
+
+<!-- TOKYO -->
+
+<div
+class="template-card"
+onclick="changeTemplate('tokyo',this)"
+>
+
+<div class="badge">NEW</div>
+
+<div class="template-thumb">
+
+<div class="mini-modern">
+
+<div style="
+width:30%;
+background:#0f172a;
+border-radius:20px;
+"></div>
+
+<div class="mini-modern-right">
+
+<div class="line-dark"></div>
+<div class="line"></div>
+<div class="line" style="width:60%"></div>
+<div class="block"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="template-info">
+
+<div class="template-name">
+Tokyo Corporate
+</div>
+
+<div class="template-meta">
+
+<span>Japan</span>
+<span>ATS</span>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- GLASS -->
+
+<div
+class="template-card"
+onclick="changeTemplate('glass',this)"
+>
+
+<div class="badge">GLASS</div>
+
+<div class="template-thumb">
+
+<div class="mini-creative">
+
+<div class="creative-circle"></div>
+
+<div class="creative-line"></div>
+<div class="creative-line"></div>
+
+</div>
+
+</div>
+
+<div class="template-info">
+
+<div class="template-name">
+Glass Morphism
+</div>
+
+<div class="template-meta">
+
+<span>UI</span>
+<span>Canva</span>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- EDITORIAL -->
+
+<div
+class="template-card"
+onclick="changeTemplate('editorial',this)"
+>
+
+<div class="badge">MAGAZINE</div>
+
+<div class="template-thumb">
+
+<div class="mini-minimal">
+
+<div class="mini-head"></div>
+
+<div class="mini-box"></div>
+
+</div>
+
+</div>
+
+<div class="template-info">
+
+<div class="template-name">
+Editorial Vogue
+</div>
+
+<div class="template-meta">
+
+<span>Luxury</span>
+<span>Fashion</span>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- NEON -->
+
+<div
+class="template-card"
+onclick="changeTemplate('neon',this)"
+>
+
+<div class="badge">TREND</div>
+
+<div class="template-thumb">
+
+<div class="mini-creative">
+
+<div class="creative-circle"></div>
+
+<div class="creative-line"></div>
+
+</div>
+
+</div>
+
+<div class="template-info">
+
+<div class="template-name">
+Neon Cyber
+</div>
+
+<div class="template-meta">
+
+<span>Dark</span>
+<span>Tech</span>
+
+</div>
 
 </div>
 
@@ -2248,49 +2533,26 @@ currentTemplate = type
 document
 .querySelectorAll('.template-card')
 .forEach(card=>{
-
 card.classList.remove('active')
-
 })
 
 el.classList.add('active')
 
-/* RESET */
-
 cv.className = 'cv'
 
 cvSidebar.style.display = 'block'
-
 cvMain.style.display = 'block'
 
-/* APPLY */
+cv.classList.add(type)
 
-if(type === 'modern'){
-
-cv.classList.add('modern')
-
-}
-
-if(type === 'minimal'){
-
-cv.classList.add('minimal')
-
+if(
+type === 'minimal' ||
+type === 'creative' ||
+type === 'glass' ||
+type === 'editorial' ||
+type === 'neon'
+){
 cvSidebar.style.display = 'none'
-
-}
-
-if(type === 'creative'){
-
-cv.classList.add('creative')
-
-cvSidebar.style.display = 'none'
-
-}
-
-if(type === 'luxe'){
-
-cv.classList.add('luxe')
-
 }
 
 }
@@ -2332,36 +2594,73 @@ applyZoom()
 DOWNLOAD CORE
 ========================= */
 
-async function prepareExport(){
+/* =========================
+EXPORT ENGINE
+========================= */
+
+async function createHighQualityCanvas(){
+
+const scale = 5
+
+const canvas = await html2canvas(cv,{
+
+scale:scale,
+
+useCORS:true,
+
+allowTaint:false,
+
+backgroundColor:'#ffffff',
+
+logging:false,
+
+removeContainer:true,
+
+imageTimeout:0,
+
+foreignObjectRendering:false,
+
+windowWidth:cv.scrollWidth,
+
+windowHeight:cv.scrollHeight,
+
+scrollX:0,
+scrollY:0
+
+})
+
+return canvas
+
+}
+
+async function prepareCVExport(){
 
 showIsland('Preparing export...')
-setProgress(10)
-
-await wait(200)
-
-const originalTransform = cv.style.transform
-const originalBoxShadow = cv.style.boxShadow
-const originalBorderRadius = cv.style.borderRadius
-
-cv.style.transform = 'scale(1)'
-cv.style.boxShadow = 'none'
-cv.style.borderRadius = '0px'
+setProgress(15)
 
 await wait(300)
 
+const oldTransform = cv.style.transform
+const oldShadow = cv.style.boxShadow
+const oldRadius = cv.style.borderRadius
+
+cv.style.transform = 'scale(1)'
+cv.style.boxShadow = 'none'
+cv.style.borderRadius = '0'
+
 return {
-originalTransform,
-originalBoxShadow,
-originalBorderRadius
+oldTransform,
+oldShadow,
+oldRadius
 }
 
 }
 
-function restoreExport(state){
+function restoreCVExport(state){
 
-cv.style.transform = state.originalTransform
-cv.style.boxShadow = state.originalBoxShadow
-cv.style.borderRadius = state.originalBorderRadius
+cv.style.transform = state.oldTransform
+cv.style.boxShadow = state.oldShadow
+cv.style.borderRadius = state.oldRadius
 
 }
 
@@ -2373,73 +2672,53 @@ async function downloadPDF(){
 
 try{
 
-const state = await prepareExport()
+const state = await prepareCVExport()
 
 showIsland('Generating PDF...')
-setProgress(25)
+setProgress(35)
 
-const opt = {
+const canvas =
+await createHighQualityCanvas()
 
-margin:0,
+setProgress(70)
 
-filename:
-`${getValue('name') || 'CV'}-DTScriptID.pdf`,
+const imgData =
+canvas.toDataURL('image/jpeg',1)
 
-image:{
-type:'jpeg',
-quality:1
-},
-
-html2canvas:{
-
-scale:4,
-
-useCORS:true,
-
-allowTaint:true,
-
-letterRendering:true,
-
-logging:false,
-
-backgroundColor:'#ffffff',
-
-scrollX:0,
-scrollY:0
-
-},
-
-jsPDF:{
-
-unit:'mm',
-
-format:'a4',
+const pdf = new jspdf.jsPDF({
 
 orientation:'portrait',
+unit:'mm',
+format:'a4'
 
-compress:true
+})
 
-}
+const pdfWidth = 210
+const pdfHeight = 297
 
-}
+pdf.addImage(
+imgData,
+'JPEG',
+0,
+0,
+pdfWidth,
+pdfHeight
+)
 
-setProgress(60)
+pdf.save(
+`${getValue('name') || 'CV'}-Premium.pdf`
+)
 
-await html2pdf()
-.set(opt)
-.from(cv)
-.save()
+restoreCVExport(state)
 
 setProgress(100)
-
-restoreExport(state)
 
 setTimeout(()=>{
 
 hideIsland()
 setProgress(0)
 
-},1200)
+},1000)
 
 }catch(err){
 
@@ -2461,50 +2740,34 @@ async function downloadJPG(){
 
 try{
 
-const state = await prepareExport()
+const state = await prepareCVExport()
 
 showIsland('Generating JPG...')
-setProgress(30)
+setProgress(35)
 
-const canvas = await html2canvas(cv,{
+const canvas =
+await createHighQualityCanvas()
 
-scale:4,
+setProgress(80)
 
-useCORS:true,
-
-allowTaint:true,
-
-backgroundColor:'#ffffff',
-
-scrollX:0,
-scrollY:0
-
-})
-
-setProgress(75)
-
-canvas.toBlob(function(blob){
+canvas.toBlob(blob=>{
 
 const link =
 document.createElement('a')
 
 link.download =
-`${getValue('name') || 'CV'}-DTScriptID.jpg`
+`${getValue('name') || 'CV'}.jpg`
 
 link.href =
 URL.createObjectURL(blob)
 
-document.body.appendChild(link)
-
 link.click()
-
-link.remove()
 
 URL.revokeObjectURL(link.href)
 
 },'image/jpeg',1)
 
-restoreExport(state)
+restoreCVExport(state)
 
 setProgress(100)
 
@@ -2513,7 +2776,7 @@ setTimeout(()=>{
 hideIsland()
 setProgress(0)
 
-},1200)
+},1000)
 
 }catch(err){
 
@@ -2535,47 +2798,34 @@ async function downloadPNG(){
 
 try{
 
-const state = await prepareExport()
+const state = await prepareCVExport()
 
 showIsland('Generating PNG...')
-setProgress(30)
+setProgress(35)
 
-const canvas = await html2canvas(cv,{
+const canvas =
+await createHighQualityCanvas()
 
-scale:4,
+setProgress(80)
 
-useCORS:true,
-
-allowTaint:true,
-
-backgroundColor:'#ffffff'
-
-})
-
-setProgress(75)
-
-canvas.toBlob(function(blob){
+canvas.toBlob(blob=>{
 
 const link =
 document.createElement('a')
 
 link.download =
-`${getValue('name') || 'CV'}-DTScriptID.png`
+`${getValue('name') || 'CV'}.png`
 
 link.href =
 URL.createObjectURL(blob)
 
-document.body.appendChild(link)
-
 link.click()
-
-link.remove()
 
 URL.revokeObjectURL(link.href)
 
 },'image/png')
 
-restoreExport(state)
+restoreCVExport(state)
 
 setProgress(100)
 
@@ -2584,7 +2834,7 @@ setTimeout(()=>{
 hideIsland()
 setProgress(0)
 
-},1200)
+},1000)
 
 }catch(err){
 
