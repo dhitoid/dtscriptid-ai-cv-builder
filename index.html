@@ -1065,7 +1065,7 @@ min-height:297mm;
 max-width:794px;
 position:relative;
 isolation:isolate;
-transform:scale(.38);
+transform:scale(calc(100vw / 820));
 
 transform-origin:top left;
 
@@ -1290,6 +1290,22 @@ color:#06b6d4;
 background:#111827;
 border:1px solid #06b6d4;
 color:#06b6d4;
+}
+
+.cv.minimal .cv-main,
+.cv.glass .cv-main,
+.cv.editorial .cv-main,
+.cv.neon .cv-main,
+.cv.creative .cv-main{
+width:100%;
+}
+
+.cv.glass{
+-webkit-backdrop-filter:blur(30px);
+}
+
+.favorite-btn{
+user-select:none;
 }
 
 </style>
@@ -1689,7 +1705,7 @@ Luxe Corporate
 <span>Premium</span>
 
 </div>
-
+</div>
 </div>
 
 <!-- TOKYO -->
@@ -2808,7 +2824,14 @@ await createHighQualityCanvas()
 
 setProgress(80)
 
-canvas.toBlob(blob=>{
+const dataURL = canvas.toDataURL('image/png')
+
+const link = document.createElement('a')
+
+link.href = dataURL
+link.download = `${getValue('name') || 'CV'}.png`
+
+link.click()
 
 const link =
 document.createElement('a')
