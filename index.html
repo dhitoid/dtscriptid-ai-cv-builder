@@ -231,26 +231,42 @@ transform:translateY(-3px);
 /* TEMPLATE */
 
 .template-grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:12px;
+display:flex;
+gap:14px;
+overflow-x:auto;
+padding-bottom:6px;
+scrollbar-width:none;
+}
+
+.template-grid::-webkit-scrollbar{
+display:none;
 }
 
 .template{
-background:rgba(255,255,255,.05);
+min-width:150px;
+background:
+linear-gradient(
+180deg,
+rgba(255,255,255,.08),
+rgba(255,255,255,.03)
+);
 padding:12px;
-border-radius:20px;
+border-radius:24px;
 cursor:pointer;
 border:1px solid rgba(255,255,255,.08);
-transition:.3s;
+transition:.4s;
+backdrop-filter:blur(20px);
 }
 
 .template:hover{
-transform:translateY(-4px);
+transform:translateY(-6px) scale(1.02);
+border-color:#8b5cf6;
 }
 
 .template.active{
 border:2px solid #06b6d4;
+box-shadow:
+0 10px 30px rgba(6,182,212,.3);
 }
 
 .template-preview{
@@ -552,6 +568,96 @@ inset:10px;
 border-radius:10px;
 background:
 rgba(255,255,255,.4);
+}
+
+.cv.canva-pro{
+background:#ffffff;
+display:grid;
+grid-template-columns:320px 1fr;
+overflow:hidden;
+}
+
+.canva-sidebar{
+background:
+linear-gradient(
+180deg,
+#7c3aed,
+#4f46e5
+);
+color:white;
+padding:50px 30px;
+}
+
+.canva-main{
+padding:50px;
+}
+
+.canva-name{
+font-size:42px;
+font-weight:900;
+line-height:1;
+margin-bottom:10px;
+}
+
+.canva-role{
+font-size:18px;
+opacity:.8;
+margin-bottom:30px;
+}
+
+.canva-section{
+margin-bottom:34px;
+}
+
+.canva-title{
+font-size:13px;
+font-weight:800;
+letter-spacing:2px;
+margin-bottom:14px;
+opacity:.7;
+}
+
+.canva-card{
+background:rgba(255,255,255,.08);
+padding:18px;
+border-radius:18px;
+backdrop-filter:blur(10px);
+margin-bottom:14px;
+}
+
+.cv{
+page-break-inside:avoid;
+break-inside:avoid;
+}
+
+.section{
+page-break-inside:avoid;
+}
+
+@media print{
+
+body{
+background:white !important;
+}
+
+.sidebar,
+.island{
+display:none !important;
+}
+
+.preview{
+padding:0 !important;
+}
+
+.cv{
+transform:none !important;
+width:210mm !important;
+min-height:297mm !important;
+box-shadow:none !important;
+border-radius:0 !important;
+margin:0 auto !important;
+}
+
 }
 
 </style>
@@ -1229,6 +1335,101 @@ cv.innerHTML = modernTemplate()
 
 }
 
+if(type === 'canva-pro'){
+
+cv.className = 'cv canva-pro'
+
+cv.innerHTML = `
+<div class="canva-sidebar">
+
+<img
+src="${document.getElementById('avatar').src}"
+class="avatar"
+/>
+
+<div class="canva-name">
+${document.getElementById('name').value}
+</div>
+
+<div class="canva-role">
+${document.getElementById('job').value}
+</div>
+
+<div class="canva-section">
+
+<div class="canva-title">
+CONTACT
+</div>
+
+<div class="canva-card">
+${document.getElementById('email').value}
+</div>
+
+<div class="canva-card">
+${document.getElementById('phone').value}
+</div>
+
+<div class="canva-card">
+${document.getElementById('location').value}
+</div>
+
+</div>
+
+<div class="canva-section">
+
+<div class="canva-title">
+SKILLS
+</div>
+
+<div class="skills" id="previewSkills"></div>
+
+</div>
+
+</div>
+
+<div class="canva-main">
+
+<div class="section">
+
+<div class="section-title">
+About Me
+</div>
+
+<p id="previewSummary">
+${document.getElementById('summary').value}
+</p>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+Experience
+</div>
+
+<p id="previewExperience">
+${document.getElementById('experience').value}
+</p>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+Education
+</div>
+
+<p id="previewEducation">
+${document.getElementById('education').value}
+</p>
+
+</div>
+
+</div>
+`
+
+}
+
 updateCV()
 
 }
@@ -1634,12 +1835,52 @@ reader.readAsArrayBuffer(file)
 
 })
 
-function parseCVText(text){
+function cleanText(text){
 
-text = text
-.replace(/\s+/g,' ')
-.replace(/[•]/g,' ')
+return text
+.replace(/\r/g,'')
+.replace(/\t/g,' ')
+.replace(/\s{2,}/g,' ')
+.replace(/•/g,'\n• ')
+.replace(/Experience/gi,'\nEXPERIENCE\n')
+.replace(/Education/gi,'\nEDUCATION\n')
+.replace(/Skills/gi,'\nSKILLS\n')
+.replace(/About Me/gi,'\nABOUT ME\n')
 .trim()
+
+}
+
+function extractSection(text,startKeywords,endKeywords=[]){
+
+const lower = text.toLowerCase()
+
+let start = -1
+
+startKeywords.forEach(k=>{
+const i = lower.indexOf(k)
+if(i !== -1 && start === -1){
+start = i
+}
+})
+
+if(start === -1) return ''
+
+let end = text.length
+
+endKeywords.forEach(k=>{
+const i = lower.indexOf(k,start+20)
+if(i !== -1 && i < end){
+end = i
+}
+})
+
+return text.slice(start,end).trim()
+
+}
+
+function parseCVText(raw){
+
+const text = cleanText(raw)
 
 /* EMAIL */
 
@@ -1647,59 +1888,58 @@ const email =
 text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)
 
 if(email){
-
 document.getElementById('email').value =
 email[0]
-
 }
 
 /* PHONE */
 
 const phone =
-text.match(/(\+62|08)[0-9\-\s]{8,}/)
+text.match(/(\+62|08)[0-9\s\-]{8,}/)
 
 if(phone){
-
 document.getElementById('phone').value =
 phone[0]
-
 }
 
 /* NAME */
 
-const words = text.split(' ')
-
-let detectedName = words
-.slice(0,2)
-.join(' ')
-
-document.getElementById('name').value =
-detectedName
-
-/* JOB */
-
-const jobs = [
-'Frontend Developer',
-'Backend Developer',
-'UI UX Designer',
-'Graphic Designer',
-'Web Developer',
-'Mobile Developer',
-'Software Engineer'
-]
-
-const foundJob =
-jobs.find(job =>
-text.toLowerCase()
-.includes(job.toLowerCase())
+const lines = text.split('\n')
+const possibleName =
+lines.find(line =>
+line.trim().split(' ').length <= 4 &&
+line.length > 4 &&
+!/cv|resume|experience|education/i.test(line)
 )
 
-if(foundJob){
+document.getElementById('name').value =
+possibleName || 'Your Name'
 
-document.getElementById('job').value =
-foundJob
+/* EXPERIENCE */
 
-}
+const experience = extractSection(
+text,
+['experience','pengalaman','riwayat kerja'],
+['education','pendidikan','skills','keahlian']
+)
+
+document.getElementById('experience').value =
+experience
+.replace(/experience|pengalaman/gi,'')
+.trim()
+
+/* EDUCATION */
+
+const education = extractSection(
+text,
+['education','pendidikan'],
+['skills','keahlian','experience']
+)
+
+document.getElementById('education').value =
+education
+.replace(/education|pendidikan/gi,'')
+.trim()
 
 /* SKILLS */
 
@@ -1719,14 +1959,16 @@ const skillKeywords = [
 'Laravel',
 'PHP',
 'MySQL',
-'UI/UX'
+'UI/UX',
+'Canva',
+'CapCut',
+'Microsoft Office'
 
 ]
 
 const foundSkills =
 skillKeywords.filter(skill =>
-text.toLowerCase()
-.includes(skill.toLowerCase())
+text.toLowerCase().includes(skill.toLowerCase())
 )
 
 document.getElementById('skills').value =
@@ -1734,64 +1976,16 @@ foundSkills.join(', ')
 
 /* SUMMARY */
 
+const about = extractSection(
+text,
+['about me','profil','summary'],
+['experience','pengalaman']
+)
+
 document.getElementById('summary').value =
-text.slice(0,300)
-
-/* EXPERIENCE */
-
-const experienceKeywords = [
-'pengalaman',
-'experience',
-'work experience',
-'riwayat kerja'
-]
-
-let expText = ''
-
-experienceKeywords.forEach(key=>{
-
-if(text.toLowerCase().includes(key)){
-
-const start =
-text.toLowerCase().indexOf(key)
-
-expText =
-text.slice(start,start+700)
-
-}
-
-})
-
-document.getElementById('experience').value =
-expText || 'Experience detected from uploaded CV.'
-
-/* EDUCATION */
-
-const eduKeywords = [
-'pendidikan',
-'education',
-'universitas',
-'sekolah'
-]
-
-let eduText = ''
-
-eduKeywords.forEach(key=>{
-
-if(text.toLowerCase().includes(key)){
-
-const start =
-text.toLowerCase().indexOf(key)
-
-eduText =
-text.slice(start,start+400)
-
-}
-
-})
-
-document.getElementById('education').value =
-eduText || 'Education detected from uploaded CV.'
+about
+.replace(/about me|profil|summary/gi,'')
+.trim()
 
 updateCV()
 
