@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
 <style>
 
@@ -223,7 +224,7 @@ transform:translateY(-3px);
 
 .template-grid{
 display:grid;
-grid-template-columns:1fr 1fr;
+grid-template-columns:repeat(3,1fr);
 gap:12px;
 }
 
@@ -263,9 +264,11 @@ overflow:auto;
 }
 
 .cv{
-width:820px;
+width:210mm;
+min-height:297mm;
 background:white;
 color:black;
+position:relative;
 border-radius:28px;
 overflow:hidden;
 box-shadow:
@@ -536,24 +539,82 @@ DTScriptID AI CV
 
 <div class="template-grid">
 
-<div class="template active" onclick="changeTemplate('modern',this)">
+<div class="template active"
+onclick="changeTemplate('modern',this)">
 
 <div class="template-preview"></div>
-
 Modern
 
 </div>
 
-<div class="template" onclick="changeTemplate('creative',this)">
+<div class="template"
+onclick="changeTemplate('creative',this)">
 
 <div class="template-preview"
 style="
 background:
-linear-gradient(90deg,#0f172a 40%,white 40%);
+linear-gradient(90deg,#111827 40%,white 40%);
 ">
 </div>
 
 Creative
+
+</div>
+
+<div class="template"
+onclick="changeTemplate('minimal',this)">
+
+<div class="template-preview"
+style="
+background:
+linear-gradient(white,white);
+border:1px solid #ddd;
+">
+</div>
+
+Minimal
+
+</div>
+
+<div class="template"
+onclick="changeTemplate('dark',this)">
+
+<div class="template-preview"
+style="
+background:
+linear-gradient(#111,#222);
+">
+</div>
+
+Dark
+
+</div>
+
+<div class="template"
+onclick="changeTemplate('elegant',this)">
+
+<div class="template-preview"
+style="
+background:
+linear-gradient(135deg,#f5f5f5,#ddd);
+">
+</div>
+
+Elegant
+
+</div>
+
+<div class="template"
+onclick="changeTemplate('tech',this)">
+
+<div class="template-preview"
+style="
+background:
+linear-gradient(135deg,#06b6d4,#111827);
+">
+</div>
+
+Tech
 
 </div>
 
@@ -578,6 +639,31 @@ Creative
 </button>
 
 </div>
+
+</div>
+
+<div class="card">
+
+<h3>Upload CV Lama</h3>
+
+<label class="upload">
+
+<input
+type="file"
+id="oldCV"
+hidden
+accept=".pdf,.txt"
+/>
+
+📄 Upload CV Lama
+
+</label>
+
+<br>
+
+<small>
+PDF/TXT otomatis dibaca AI
+</small>
 
 </div>
 
@@ -819,20 +905,32 @@ el.classList.add('active')
 const cv =
 document.getElementById('cv')
 
-if(type === 'modern'){
-
+if(type === 'minimal'){
 cv.className = 'cv cv-modern'
-
+cv.style.background = 'white'
+cv.style.color = '#111'
 cv.innerHTML = modernTemplate()
-
 }
 
-if(type === 'creative'){
+if(type === 'dark'){
+cv.className = 'cv cv-modern'
+cv.style.background = '#111827'
+cv.style.color = 'white'
+cv.innerHTML = modernTemplate()
+}
 
-cv.className = 'cv cv-creative'
+if(type === 'elegant'){
+cv.className = 'cv cv-modern'
+cv.style.background = '#f8f5f2'
+cv.style.color = '#111'
+cv.innerHTML = modernTemplate()
+}
 
-cv.innerHTML = creativeTemplate()
-
+if(type === 'tech'){
+cv.className = 'cv cv-modern'
+cv.style.background = '#0f172a'
+cv.style.color = 'white'
+cv.innerHTML = modernTemplate()
 }
 
 updateCV()
@@ -1128,6 +1226,136 @@ await html2pdf()
 .set(opt)
 .from(cv)
 .save()
+
+hideIsland()
+
+}
+
+document
+.getElementById('oldCV')
+.addEventListener('change', async function(e){
+
+const file = e.target.files[0]
+
+if(!file) return
+
+showIsland('Reading CV...')
+
+const reader = new FileReader()
+
+if(file.type === 'text/plain'){
+
+reader.onload = function(event){
+
+parseCVText(event.target.result)
+
+}
+
+reader.readAsText(file)
+
+}
+
+else if(file.type === 'application/pdf'){
+
+reader.onload = async function(){
+
+const typedarray =
+new Uint8Array(this.result)
+
+const pdf =
+await pdfjsLib.getDocument(typedarray).promise
+
+let fullText = ''
+
+for(let i=1;i<=pdf.numPages;i++){
+
+const page =
+await pdf.getPage(i)
+
+const textContent =
+await page.getTextContent()
+
+const text =
+textContent.items
+.map(item=>item.str)
+.join(' ')
+
+fullText += text + ' '
+
+}
+
+parseCVText(fullText)
+
+}
+
+reader.readAsArrayBuffer(file)
+
+}
+
+})
+
+function parseCVText(text){
+
+const emailMatch =
+text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}/i)
+
+const phoneMatch =
+text.match(/(\\+62|08)[0-9\\-\\s]{8,}/)
+
+if(emailMatch){
+
+document.getElementById('email').value =
+emailMatch[0]
+
+}
+
+if(phoneMatch){
+
+document.getElementById('phone').value =
+phoneMatch[0]
+
+}
+
+/* SIMPLE NAME DETECT */
+
+const lines = text.split(/\\n|\\r/)
+
+if(lines[0]){
+
+document.getElementById('name').value =
+lines[0].trim()
+
+}
+
+/* SKILLS */
+
+const skillKeywords = [
+'HTML',
+'CSS',
+'JavaScript',
+'React',
+'Node.js',
+'Figma',
+'UI Design',
+'Tailwind',
+'Python'
+]
+
+const foundSkills =
+skillKeywords.filter(skill =>
+text.toLowerCase()
+.includes(skill.toLowerCase())
+)
+
+document.getElementById('skills').value =
+foundSkills.join(',')
+
+/* EXPERIENCE */
+
+document.getElementById('experience').value =
+text.slice(0,600)
+
+updateCV()
 
 hideIsland()
 
