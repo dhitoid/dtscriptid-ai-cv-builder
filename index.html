@@ -2,7 +2,14 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta
+name="viewport"
+content="
+width=device-width,
+initial-scale=1,
+maximum-scale=1,
+user-scalable=no
+"/>
 
 <title>DTScriptID AI CV Builder</title>
 
@@ -177,6 +184,9 @@ padding:16px;
 border-radius:18px;
 color:white;
 font-family:inherit;
+font-size:16px;
+-webkit-appearance:none;
+appearance:none;
 border:1px solid transparent;
 transition:.3s;
 }
@@ -261,6 +271,12 @@ padding:40px;
 display:flex;
 justify-content:center;
 overflow:auto;
+background:
+linear-gradient(
+180deg,
+rgba(255,255,255,.02),
+transparent
+);
 }
 
 .cv{
@@ -435,6 +451,20 @@ font-size:30px;
 .sidebar{
 border-right:none;
 border-bottom:1px solid var(--border);
+}
+
+.cv{
+transform:scale(.48);
+transform-origin:top center;
+margin-bottom:-700px;
+}
+
+}
+
+@media(max-width:700px){
+
+.template-grid{
+grid-template-columns:1fr 1fr;
 }
 
 }
@@ -622,26 +652,6 @@ Tech
 
 </div>
 
-<!-- EXPORT -->
-
-<div class="card">
-
-<h3>Export CV</h3>
-
-<button class="primary" onclick="downloadPDF()">
-⬇ Download PDF
-</button>
-
-<br><br>
-
-<button class="secondary" onclick="window.print()">
-🖨 Print CV
-</button>
-
-</div>
-
-</div>
-
 <div class="card">
 
 <h3>Upload CV Lama</h3>
@@ -664,6 +674,26 @@ accept=".pdf,.txt"
 <small>
 PDF/TXT otomatis dibaca AI
 </small>
+
+</div>
+
+<!-- EXPORT -->
+
+<div class="card">
+
+<h3>Export CV</h3>
+
+<button class="primary" onclick="downloadPDF()">
+⬇ Download PDF
+</button>
+
+<br><br>
+
+<button class="secondary" onclick="window.print()">
+🖨 Print CV
+</button>
+
+</div>
 
 </div>
 
@@ -896,41 +926,91 @@ currentTemplate = type
 
 document
 .querySelectorAll('.template')
-.forEach(item=>
+.forEach(item=>{
 item.classList.remove('active')
-)
+})
 
 el.classList.add('active')
 
 const cv =
 document.getElementById('cv')
 
-if(type === 'minimal'){
+/* RESET */
+
+cv.removeAttribute('style')
+
+/* MODERN */
+
+if(type === 'modern'){
+
 cv.className = 'cv cv-modern'
+
+cv.innerHTML = modernTemplate()
+
+}
+
+/* CREATIVE */
+
+if(type === 'creative'){
+
+cv.className = 'cv cv-creative'
+
+cv.innerHTML = creativeTemplate()
+
+}
+
+/* MINIMAL */
+
+if(type === 'minimal'){
+
+cv.className = 'cv cv-modern'
+
 cv.style.background = 'white'
 cv.style.color = '#111'
+
 cv.innerHTML = modernTemplate()
+
 }
+
+/* DARK */
 
 if(type === 'dark'){
+
 cv.className = 'cv cv-modern'
+
 cv.style.background = '#111827'
 cv.style.color = 'white'
+
 cv.innerHTML = modernTemplate()
+
 }
+
+/* ELEGANT */
 
 if(type === 'elegant'){
+
 cv.className = 'cv cv-modern'
+
 cv.style.background = '#f8f5f2'
 cv.style.color = '#111'
+
 cv.innerHTML = modernTemplate()
+
 }
 
+/* TECH */
+
 if(type === 'tech'){
+
 cv.className = 'cv cv-modern'
-cv.style.background = '#0f172a'
+
+cv.style.background =
+'linear-gradient(135deg,#0f172a,#111827)'
+
 cv.style.color = 'white'
+
 cv.innerHTML = modernTemplate()
+
 }
 
 updateCV()
@@ -1210,8 +1290,9 @@ quality:1
 },
 
 html2canvas:{
-scale:2,
-useCORS:true
+scale:3,
+useCORS:true,
+scrollY:0
 },
 
 jsPDF:{
@@ -1297,10 +1378,10 @@ reader.readAsArrayBuffer(file)
 function parseCVText(text){
 
 const emailMatch =
-text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}/i)
+text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)
 
 const phoneMatch =
-text.match(/(\\+62|08)[0-9\\-\\s]{8,}/)
+text.match(/(\+62|08)[0-9\-\s]{8,}/)
 
 if(emailMatch){
 
