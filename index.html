@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
+
 <meta
 name="viewport"
 content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
 />
 
-<title>DTScriptID Canva CV Builder</title>
+<title>DTScriptID Canva CV Builder PRO</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -17,6 +18,8 @@ rel="stylesheet"
 />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
 
@@ -34,8 +37,6 @@ box-sizing:border-box;
 --bg:#060816;
 --card:rgba(255,255,255,.06);
 --border:rgba(255,255,255,.08);
---text:#fff;
---muted:rgba(255,255,255,.7);
 --primary:#7c3aed;
 --secondary:#06b6d4;
 }
@@ -59,24 +60,30 @@ body::before{
 content:'';
 position:fixed;
 inset:0;
+
 background:
 radial-gradient(circle at top left,#7c3aed55,transparent 30%),
 radial-gradient(circle at bottom right,#06b6d455,transparent 30%),
 radial-gradient(circle at center,#ec489955,transparent 35%);
+
 animation:aurora 14s linear infinite;
 z-index:-2;
 }
 
 @keyframes aurora{
+
 0%{
 transform:rotate(0deg) scale(1);
 }
+
 50%{
 transform:rotate(180deg) scale(1.2);
 }
+
 100%{
 transform:rotate(360deg) scale(1);
 }
+
 }
 
 /* =========================
@@ -87,9 +94,80 @@ body::after{
 content:'';
 position:fixed;
 inset:0;
-background-image:url('https://grainy-gradients.vercel.app/noise.svg');
-opacity:.07;
+opacity:.06;
 z-index:-1;
+background-image:url('https://grainy-gradients.vercel.app/noise.svg');
+}
+
+/* =========================
+TOPBAR
+========================= */
+
+.topbar{
+position:sticky;
+top:0;
+z-index:999;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:18px 24px;
+
+backdrop-filter:blur(30px);
+
+background:rgba(6,8,22,.7);
+
+border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.top-left{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.logo{
+font-size:28px;
+font-weight:900;
+
+background:
+linear-gradient(
+135deg,
+#fff,
+#8be9fd
+);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.badge-live{
+padding:10px 14px;
+border-radius:999px;
+font-size:11px;
+font-weight:800;
+
+background:
+linear-gradient(
+135deg,
+#7c3aed,
+#06b6d4
+);
+}
+
+.top-actions{
+display:flex;
+gap:12px;
+}
+
+.top-btn{
+padding:12px 16px;
+border-radius:16px;
+background:rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.08);
+color:white;
+font-weight:700;
 }
 
 /* =========================
@@ -108,31 +186,15 @@ SIDEBAR
 
 .sidebar{
 padding:24px;
-border-right:1px solid var(--border);
+border-right:1px solid rgba(255,255,255,.08);
 background:rgba(255,255,255,.03);
 backdrop-filter:blur(30px);
 overflow-y:auto;
 }
 
-.logo{
-font-size:32px;
-font-weight:900;
-margin-bottom:24px;
-
-background:
-linear-gradient(
-135deg,
-#fff,
-#8be9fd
-);
-
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
 .card{
-background:var(--card);
-border:1px solid var(--border);
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.08);
 border-radius:28px;
 padding:22px;
 margin-bottom:20px;
@@ -140,8 +202,8 @@ backdrop-filter:blur(20px);
 }
 
 .card h3{
-font-size:16px;
 margin-bottom:18px;
+font-size:16px;
 }
 
 /* =========================
@@ -154,9 +216,9 @@ margin-bottom:14px;
 
 label{
 display:block;
-font-size:13px;
 margin-bottom:8px;
-color:var(--muted);
+font-size:13px;
+opacity:.7;
 }
 
 input,
@@ -164,13 +226,21 @@ textarea{
 width:100%;
 border:none;
 outline:none;
-background:rgba(255,255,255,.06);
+
 padding:16px;
+
 border-radius:18px;
+
+background:rgba(255,255,255,.06);
+
 color:white;
-font-family:inherit;
+
 font-size:15px;
+
+font-family:inherit;
+
 border:1px solid transparent;
+
 transition:.3s;
 }
 
@@ -182,7 +252,7 @@ resize:none;
 input:focus,
 textarea:focus{
 border-color:#06b6d4;
-background:rgba(255,255,255,.09);
+background:rgba(255,255,255,.08);
 }
 
 /* =========================
@@ -201,13 +271,15 @@ width:100%;
 padding:16px;
 border-radius:18px;
 font-weight:800;
+color:white;
+
 background:
 linear-gradient(
 135deg,
 #7c3aed,
 #06b6d4
 );
-color:white;
+
 box-shadow:
 0 10px 30px rgba(124,58,237,.35);
 }
@@ -221,56 +293,20 @@ UPLOAD
 ========================= */
 
 .upload{
-border:2px dashed rgba(255,255,255,.12);
+display:block;
 padding:24px;
 border-radius:22px;
 text-align:center;
 cursor:pointer;
-display:block;
+
+border:2px dashed rgba(255,255,255,.12);
+
 transition:.3s;
 }
 
 .upload:hover{
 border-color:#06b6d4;
 background:rgba(255,255,255,.04);
-}
-
-/* =========================
-TABS
-========================= */
-
-.template-tabs{
-display:flex;
-gap:10px;
-overflow:auto;
-margin-bottom:18px;
-padding-bottom:4px;
-scrollbar-width:none;
-}
-
-.template-tabs::-webkit-scrollbar{
-display:none;
-}
-
-.tab{
-width:auto;
-padding:12px 18px;
-border-radius:999px;
-background:rgba(255,255,255,.06);
-border:1px solid rgba(255,255,255,.08);
-font-size:13px;
-font-weight:700;
-white-space:nowrap;
-color:white;
-}
-
-.tab.active{
-background:
-linear-gradient(
-135deg,
-#7c3aed,
-#06b6d4
-);
 }
 
 /* =========================
@@ -287,35 +323,45 @@ MARKETPLACE
 
 .template-marketplace{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-gap:18px;
+grid-template-columns:
+repeat(auto-fill,minmax(220px,1fr));
+gap:20px;
 }
 
 .template-card{
 position:relative;
-border-radius:28px;
 overflow:hidden;
+border-radius:30px;
 cursor:pointer;
+
 background:
 linear-gradient(
 180deg,
 rgba(255,255,255,.08),
 rgba(255,255,255,.03)
 );
+
 border:1px solid rgba(255,255,255,.08);
-transition:.45s;
-backdrop-filter:blur(20px);
+
+transition:
+transform .5s,
+box-shadow .5s,
+border .5s;
+
+backdrop-filter:blur(30px);
 }
 
 .template-card:hover{
+
 transform:
-translateY(-10px)
-scale(1.02);
+translateY(-12px)
+scale(1.03);
 
 border-color:#8b5cf6;
 
 box-shadow:
-0 20px 60px rgba(124,58,237,.28);
+0 30px 70px rgba(124,58,237,.35);
+
 }
 
 .template-card.active{
@@ -325,8 +371,8 @@ border:2px solid #06b6d4;
 .template-thumb{
 height:240px;
 background:white;
-position:relative;
 overflow:hidden;
+position:relative;
 }
 
 .template-info{
@@ -336,15 +382,15 @@ padding:14px;
 .template-name{
 font-size:15px;
 font-weight:800;
-margin-bottom:5px;
+margin-bottom:6px;
 }
 
 .template-meta{
-font-size:12px;
-opacity:.7;
 display:flex;
 gap:10px;
 flex-wrap:wrap;
+font-size:12px;
+opacity:.7;
 }
 
 .badge{
@@ -355,10 +401,7 @@ padding:8px 12px;
 border-radius:999px;
 font-size:11px;
 font-weight:800;
-z-index:3;
-}
-
-.badge.pro{
+z-index:5;
 background:#8b5cf6;
 }
 
@@ -366,15 +409,25 @@ background:#8b5cf6;
 position:absolute;
 top:12px;
 right:12px;
-width:36px;
-height:36px;
+
+width:38px;
+height:38px;
+
 border-radius:50%;
+
 background:rgba(0,0,0,.45);
+
 display:flex;
 align-items:center;
 justify-content:center;
+
 backdrop-filter:blur(20px);
-z-index:3;
+
+z-index:5;
+}
+
+.favorite-btn.active{
+background:#ec4899;
 }
 
 /* =========================
@@ -383,15 +436,16 @@ MINI CV
 
 .mini-cv{
 height:100%;
-background:white;
-padding:12px;
 display:flex;
 gap:12px;
+padding:12px;
+background:white;
 }
 
 .mini-sidebar{
 width:30%;
-border-radius:14px;
+border-radius:16px;
+
 background:
 linear-gradient(
 180deg,
@@ -406,9 +460,9 @@ flex:1;
 
 .mini-title{
 height:18px;
-border-radius:8px;
+border-radius:999px;
 background:#111827;
-margin-bottom:12px;
+margin-bottom:14px;
 }
 
 .mini-line{
@@ -424,9 +478,28 @@ width:70%;
 
 .mini-block{
 height:90px;
-border-radius:14px;
+border-radius:18px;
 background:#f3f4f6;
-margin-top:16px;
+margin-top:18px;
+}
+
+/* =========================
+ATS SCORE
+========================= */
+
+.ats-score{
+font-size:52px;
+font-weight:900;
+
+background:
+linear-gradient(
+135deg,
+#06b6d4,
+#7c3aed
+);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 }
 
 /* =========================
@@ -436,9 +509,35 @@ PREVIEW
 .preview{
 padding:40px;
 display:flex;
-justify-content:center;
+flex-direction:column;
+align-items:center;
 overflow:auto;
+gap:20px;
 }
+
+/* =========================
+ZOOM
+========================= */
+
+.zoom-controls{
+display:flex;
+gap:12px;
+}
+
+.zoom-controls button{
+width:48px;
+height:48px;
+border-radius:16px;
+font-size:18px;
+font-weight:900;
+
+background:rgba(255,255,255,.08);
+color:white;
+}
+
+/* =========================
+CV
+========================= */
 
 .cv{
 width:210mm;
@@ -447,25 +546,14 @@ background:white;
 color:#111827;
 border-radius:30px;
 overflow:hidden;
+
 box-shadow:
 0 30px 70px rgba(0,0,0,.45);
-animation:fade .4s ease;
-}
 
-@keyframes fade{
-from{
-opacity:0;
-transform:translateY(20px);
-}
-to{
-opacity:1;
-transform:none;
-}
-}
+transform-origin:top center;
 
-/* =========================
-CANVA PRO TEMPLATE
-========================= */
+transition:.3s;
+}
 
 .cv.canva-pro{
 display:grid;
@@ -473,19 +561,20 @@ grid-template-columns:320px 1fr;
 }
 
 .canva-sidebar{
+padding:50px 30px;
+color:white;
+
 background:
 linear-gradient(
 180deg,
 #7c3aed,
 #4f46e5
 );
-padding:50px 30px;
-color:white;
 }
 
 .canva-main{
 padding:50px;
-background:#fff;
+background:white;
 }
 
 .avatar{
@@ -526,7 +615,6 @@ opacity:.7;
 background:rgba(255,255,255,.09);
 padding:16px;
 border-radius:18px;
-backdrop-filter:blur(20px);
 margin-bottom:12px;
 word-break:break-word;
 }
@@ -562,7 +650,7 @@ font-weight:700;
 }
 
 /* =========================
-DYNAMIC ISLAND
+ISLAND
 ========================= */
 
 .island{
@@ -570,17 +658,26 @@ position:fixed;
 top:20px;
 left:50%;
 transform:translateX(-50%);
+
 background:rgba(0,0,0,.75);
-backdrop-filter:blur(20px);
+
 padding:14px 24px;
+
 border-radius:999px;
+
 display:flex;
 align-items:center;
 gap:12px;
-z-index:999;
-border:1px solid rgba(255,255,255,.1);
+
+backdrop-filter:blur(20px);
+
+border:1px solid rgba(255,255,255,.08);
+
+z-index:9999;
+
 opacity:0;
 pointer-events:none;
+
 transition:.4s;
 }
 
@@ -592,9 +689,11 @@ top:30px;
 .loader{
 width:18px;
 height:18px;
+border-radius:50%;
+
 border:2px solid rgba(255,255,255,.2);
 border-top:2px solid white;
-border-radius:50%;
+
 animation:spin 1s linear infinite;
 }
 
@@ -602,6 +701,28 @@ animation:spin 1s linear infinite;
 to{
 transform:rotate(360deg);
 }
+}
+
+.progress-wrap{
+width:120px;
+height:6px;
+border-radius:999px;
+background:rgba(255,255,255,.08);
+overflow:hidden;
+}
+
+.progress-bar{
+width:0%;
+height:100%;
+
+background:
+linear-gradient(
+90deg,
+#06b6d4,
+#7c3aed
+);
+
+transition:.3s;
 }
 
 /* =========================
@@ -616,7 +737,7 @@ grid-template-columns:1fr;
 
 .sidebar{
 border-right:none;
-border-bottom:1px solid var(--border);
+border-bottom:1px solid rgba(255,255,255,.08);
 }
 
 .preview{
@@ -627,11 +748,12 @@ justify-content:flex-start;
 .cv{
 width:794px;
 min-height:1123px;
+
 transform:scale(.38);
 transform-origin:top left;
+
 margin-right:-520px;
 margin-bottom:-720px;
-border-radius:24px;
 }
 
 .cv.canva-pro{
@@ -646,6 +768,38 @@ grid-template-columns:1fr;
 <body>
 
 <!-- =========================
+TOPBAR
+========================= -->
+
+<div class="topbar">
+
+<div class="top-left">
+
+<div class="logo">
+DTScriptID CV
+</div>
+
+<div class="badge-live">
+LIVE MARKETPLACE
+</div>
+
+</div>
+
+<div class="top-actions">
+
+<button class="top-btn">
+❤️ Favorites
+</button>
+
+<button class="top-btn">
+👑 PRO
+</button>
+
+</div>
+
+</div>
+
+<!-- =========================
 ISLAND
 ========================= -->
 
@@ -657,6 +811,10 @@ ISLAND
 Generating...
 </span>
 
+<div class="progress-wrap">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+
 </div>
 
 <div class="container">
@@ -666,14 +824,6 @@ SIDEBAR
 ========================= -->
 
 <div class="sidebar">
-
-<div class="logo">
-DTScriptID CV
-</div>
-
-<!-- =========================
-INPUT
-========================= -->
 
 <div class="card">
 
@@ -685,7 +835,7 @@ INPUT
 </div>
 
 <div class="input-group">
-<label>Job Title</label>
+<label>Job</label>
 <input id="job" placeholder="Frontend Developer">
 </div>
 
@@ -705,7 +855,7 @@ INPUT
 </div>
 
 <div class="input-group">
-<label>About Me</label>
+<label>About</label>
 <textarea id="summary"></textarea>
 </div>
 
@@ -720,7 +870,7 @@ INPUT
 </div>
 
 <div class="input-group">
-<label>Skills (pisahkan koma)</label>
+<label>Skills</label>
 <textarea id="skills"></textarea>
 </div>
 
@@ -730,9 +880,7 @@ INPUT
 
 </div>
 
-<!-- =========================
-UPLOAD
-========================= -->
+<!-- PHOTO -->
 
 <div class="card">
 
@@ -753,44 +901,31 @@ id="photoInput"
 
 </div>
 
-<!-- =========================
-MARKETPLACE
-========================= -->
+<!-- ATS -->
+
+<div class="card">
+
+<h3>ATS Score</h3>
+
+<div class="ats-score" id="atsScore">
+82%
+</div>
+
+</div>
+
+<!-- MARKETPLACE -->
 
 <div class="card">
 
 <h3>Template Marketplace</h3>
-
-<div class="template-tabs">
-
-<button class="tab active">
-All
-</button>
-
-<button class="tab">
-Modern
-</button>
-
-<button class="tab">
-ATS
-</button>
-
-<button class="tab">
-Creative
-</button>
-
-<button class="tab">
-Premium
-</button>
-
-</div>
 
 <div class="template-search">
 
 <input
 type="text"
 placeholder="Search template..."
->
+id="templateSearch"
+/>
 
 </div>
 
@@ -800,10 +935,10 @@ placeholder="Search template..."
 
 <div
 class="template-card active"
-onclick="changeTemplate('canva-pro',this)"
+onclick="changeTemplate(this)"
 >
 
-<div class="badge pro">
+<div class="badge">
 PRO
 </div>
 
@@ -851,94 +986,11 @@ Neo Purple Resume
 
 </div>
 
-<!-- CARD -->
-
-<div
-class="template-card"
-onclick="changeTemplate('glass',this)"
->
-
-<div class="badge pro">
-PRO
-</div>
-
-<div class="favorite-btn">
-♡
-</div>
-
-<div class="template-thumb">
-
-<div
-style="
-height:100%;
-background:
-linear-gradient(
-135deg,
-#0f172a,
-#111827
-);
-padding:18px;
-"
->
-
-<div
-style="
-height:70px;
-border-radius:18px;
-background:rgba(255,255,255,.1);
-backdrop-filter:blur(20px);
-margin-bottom:16px;
-"
-></div>
-
-<div
-style="
-height:14px;
-background:#fff;
-opacity:.3;
-border-radius:999px;
-margin-bottom:10px;
-"
-></div>
-
-<div
-style="
-height:14px;
-width:70%;
-background:#fff;
-opacity:.3;
-border-radius:999px;
-"
-></div>
-
 </div>
 
 </div>
 
-<div class="template-info">
-
-<div class="template-name">
-Glass Resume
-</div>
-
-<div class="template-meta">
-
-<span>Glass</span>
-<span>Future</span>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- =========================
-EXPORT
-========================= -->
+<!-- EXPORT -->
 
 <div class="card">
 
@@ -946,6 +998,12 @@ EXPORT
 
 <button class="primary" onclick="downloadPDF()">
 ⬇ Download PDF
+</button>
+
+<br><br>
+
+<button class="primary" onclick="downloadJPG()">
+🖼 Download JPG
 </button>
 
 </div>
@@ -958,6 +1016,14 @@ PREVIEW
 
 <div class="preview">
 
+<div class="zoom-controls">
+
+<button onclick="zoomOut()">-</button>
+
+<button onclick="zoomIn()">+</button>
+
+</div>
+
 <div class="cv canva-pro" id="cv">
 
 <div class="canva-sidebar">
@@ -968,17 +1034,11 @@ class="avatar"
 id="avatar"
 />
 
-<div
-class="canva-name"
-id="previewName"
->
+<div class="canva-name" id="previewName">
 Nama Kamu
 </div>
 
-<div
-class="canva-role"
-id="previewJob"
->
+<div class="canva-role" id="previewJob">
 Frontend Developer
 </div>
 
@@ -988,24 +1048,15 @@ Frontend Developer
 CONTACT
 </div>
 
-<div
-class="canva-card"
-id="previewEmail"
->
+<div class="canva-card" id="previewEmail">
 email@gmail.com
 </div>
 
-<div
-class="canva-card"
-id="previewPhone"
->
+<div class="canva-card" id="previewPhone">
 +62
 </div>
 
-<div
-class="canva-card"
-id="previewLocation"
->
+<div class="canva-card" id="previewLocation">
 Indonesia
 </div>
 
@@ -1077,8 +1128,6 @@ Bachelor Degree
 
 </div>
 
-</div>
-
 <script>
 
 /* =========================
@@ -1098,6 +1147,63 @@ const fields = [
 'skills'
 
 ]
+
+/* =========================
+UPDATE CV
+========================= */
+
+function updateCV(){
+
+const get = id =>
+document.getElementById(id).value
+
+previewName.innerText =
+get('name') || 'Nama Kamu'
+
+previewJob.innerText =
+get('job') || 'Job'
+
+previewEmail.innerText =
+get('email') || 'Email'
+
+previewPhone.innerText =
+get('phone') || 'Phone'
+
+previewLocation.innerText =
+get('location') || 'Location'
+
+previewSummary.innerText =
+get('summary') || 'About Me'
+
+previewExperience.innerText =
+get('experience') || 'Experience'
+
+previewEducation.innerText =
+get('education') || 'Education'
+
+const skills =
+get('skills')
+.split(',')
+.filter(skill=>skill.trim() !== '')
+
+previewSkills.innerHTML =
+skills.map(skill=>
+`
+<div class="tag">
+${skill}
+</div>
+`
+).join('')
+
+updateATS()
+
+saveData()
+
+}
+
+/* =========================
+AUTO LISTENER
+========================= */
 
 fields.forEach(id=>{
 
@@ -1127,63 +1233,10 @@ textarea.scrollHeight+'px'
 })
 
 /* =========================
-UPDATE CV
+PHOTO
 ========================= */
 
-function updateCV(){
-
-const get = id =>
-document.getElementById(id).value
-
-document.getElementById('previewName').innerText =
-get('name') || 'Nama Kamu'
-
-document.getElementById('previewJob').innerText =
-get('job') || 'Job Title'
-
-document.getElementById('previewEmail').innerText =
-get('email') || 'Email'
-
-document.getElementById('previewPhone').innerText =
-get('phone') || 'Phone'
-
-document.getElementById('previewLocation').innerText =
-get('location') || 'Location'
-
-document.getElementById('previewSummary').innerText =
-get('summary') || 'About Me'
-
-document.getElementById('previewExperience').innerText =
-get('experience') || 'Experience'
-
-document.getElementById('previewEducation').innerText =
-get('education') || 'Education'
-
-/* SKILLS */
-
-const skills =
-get('skills')
-.split(',')
-.filter(skill=>skill.trim() !== '')
-
-document.getElementById('previewSkills').innerHTML =
-skills.map(skill=>
-`
-<div class="tag">
-${skill}
-</div>
-`
-).join('')
-
-}
-
-/* =========================
-UPLOAD PHOTO
-========================= */
-
-document
-.getElementById('photoInput')
-.addEventListener('change',function(e){
+photoInput.addEventListener('change',function(e){
 
 const file = e.target.files[0]
 
@@ -1193,9 +1246,8 @@ const reader = new FileReader()
 
 reader.onload = function(event){
 
-document
-.getElementById('avatar')
-.src = event.target.result
+avatar.src =
+event.target.result
 
 }
 
@@ -1206,39 +1258,166 @@ reader.readAsDataURL(file)
 })
 
 /* =========================
+SEARCH
+========================= */
+
+templateSearch.addEventListener('input',()=>{
+
+const value =
+templateSearch.value.toLowerCase()
+
+document
+.querySelectorAll('.template-card')
+.forEach(card=>{
+
+const text =
+card.innerText.toLowerCase()
+
+card.style.display =
+text.includes(value)
+? 'block'
+: 'none'
+
+})
+
+})
+
+/* =========================
+FAVORITE
+========================= */
+
+document
+.querySelectorAll('.favorite-btn')
+.forEach(btn=>{
+
+btn.addEventListener('click',function(e){
+
+e.stopPropagation()
+
+if(btn.classList.contains('active')){
+
+btn.classList.remove('active')
+btn.innerHTML='♡'
+
+}else{
+
+btn.classList.add('active')
+btn.innerHTML='♥'
+
+}
+
+})
+
+})
+
+/* =========================
 ISLAND
 ========================= */
 
 function showIsland(text){
 
-document
-.getElementById('islandText')
-.innerText = text
+islandText.innerText = text
 
-document
-.getElementById('island')
-.classList.add('show')
+island.classList.add('show')
 
 }
 
 function hideIsland(){
 
-document
-.getElementById('island')
-.classList.remove('show')
+island.classList.remove('show')
 
 }
 
 /* =========================
-AI GENERATE
+PROGRESS
+========================= */
+
+function setProgress(percent){
+
+progressBar.style.width =
+percent+'%'
+
+}
+
+/* =========================
+ATS
+========================= */
+
+function updateATS(){
+
+let score = 40
+
+if(name.value) score += 10
+if(job.value) score += 10
+if(summary.value) score += 10
+if(experience.value) score += 10
+if(skills.value) score += 20
+
+atsScore.innerText =
+score+'%'
+
+}
+
+/* =========================
+AUTO SAVE
+========================= */
+
+function saveData(){
+
+const data = {}
+
+fields.forEach(id=>{
+
+data[id] =
+document.getElementById(id).value
+
+})
+
+localStorage.setItem(
+'dtscript_cv',
+JSON.stringify(data)
+)
+
+}
+
+function loadData(){
+
+const data =
+JSON.parse(
+localStorage.getItem('dtscript_cv')
+)
+
+if(!data) return
+
+fields.forEach(id=>{
+
+if(data[id]){
+
+document.getElementById(id).value =
+data[id]
+
+}
+
+})
+
+updateCV()
+
+}
+
+loadData()
+
+/* =========================
+AI
 ========================= */
 
 async function generateAI(){
 
 showIsland('Generating AI CV...')
 
+setProgress(20)
+
 await new Promise(resolve=>
-setTimeout(resolve,1800)
+setTimeout(resolve,800)
 )
 
 if(!summary.value){
@@ -1248,6 +1427,12 @@ summary.value =
 
 }
 
+setProgress(50)
+
+await new Promise(resolve=>
+setTimeout(resolve,700)
+)
+
 if(!experience.value){
 
 experience.value =
@@ -1256,8 +1441,7 @@ DTScriptID (2024 - Present)
 
 • Build premium UI website
 • Create responsive landing page
-• Handle modern frontend system
-• Optimize performance & UX`
+• Optimize performance`
 
 }
 
@@ -1278,15 +1462,22 @@ skills.value =
 
 updateCV()
 
+setProgress(100)
+
+setTimeout(()=>{
+
 hideIsland()
+setProgress(0)
+
+},1000)
 
 }
 
 /* =========================
-CHANGE TEMPLATE
+TEMPLATE
 ========================= */
 
-function changeTemplate(type,el){
+function changeTemplate(el){
 
 document
 .querySelectorAll('.template-card')
@@ -1298,45 +1489,53 @@ card.classList.remove('active')
 
 el.classList.add('active')
 
-const cv =
-document.getElementById('cv')
+}
 
-if(type === 'canva-pro'){
+/* =========================
+ZOOM
+========================= */
 
-cv.className = 'cv canva-pro'
+let zoomLevel = 1
+
+function zoomIn(){
+
+zoomLevel += .1
+
+cv.style.transform =
+`scale(${zoomLevel})`
 
 }
 
-if(type === 'glass'){
+function zoomOut(){
 
-cv.className = 'cv canva-pro'
+zoomLevel -= .1
 
-cv.style.background =
-'linear-gradient(135deg,#0f172a,#111827)'
-
-}
+cv.style.transform =
+`scale(${zoomLevel})`
 
 }
 
 /* =========================
-DOWNLOAD PDF
+PDF
 ========================= */
 
 async function downloadPDF(){
 
 showIsland('Generating PDF...')
 
-const cv =
-document.getElementById('cv')
-
-const oldTransform =
-cv.style.transform
-
-cv.style.transform='scale(1)'
+setProgress(10)
 
 await new Promise(resolve=>
-setTimeout(resolve,500)
+setTimeout(resolve,300)
 )
+
+setProgress(30)
+
+await new Promise(resolve=>
+setTimeout(resolve,300)
+)
+
+setProgress(70)
 
 await html2pdf()
 .set({
@@ -1344,7 +1543,7 @@ await html2pdf()
 margin:0,
 
 filename:
-(document.getElementById('name').value || 'CV')
+(name.value || 'CV')
 +'.pdf',
 
 image:{
@@ -1367,9 +1566,55 @@ orientation:'portrait'
 .from(cv)
 .save()
 
-cv.style.transform = oldTransform
+setProgress(100)
+
+setTimeout(()=>{
 
 hideIsland()
+setProgress(0)
+
+},1000)
+
+}
+
+/* =========================
+JPG
+========================= */
+
+async function downloadJPG(){
+
+showIsland('Generating JPG...')
+
+setProgress(30)
+
+const canvas =
+await html2canvas(cv,{
+
+scale:4,
+useCORS:true
+
+})
+
+setProgress(80)
+
+const link =
+document.createElement('a')
+
+link.download='CV.jpg'
+
+link.href =
+canvas.toDataURL('image/jpeg',1)
+
+link.click()
+
+setProgress(100)
+
+setTimeout(()=>{
+
+hideIsland()
+setProgress(0)
+
+},1000)
 
 }
 
