@@ -3,13 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta
-name="viewport"
-content="
-width=device-width,
-initial-scale=1,
-maximum-scale=1,
-user-scalable=no
-"/>
+name="viewport"content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
 
 <title>DTScriptID AI CV Builder</title>
 
@@ -268,6 +262,8 @@ position:relative;
 
 .preview{
 padding:40px;
+min-height:100vh;
+align-items:flex-start;
 display:flex;
 justify-content:center;
 overflow:auto;
@@ -422,17 +418,29 @@ border-color:#06b6d4;
 grid-template-columns:1fr;
 }
 
+.sidebar{
+border-right:none;
+border-bottom:1px solid var(--border);
+}
+
 .preview{
 padding:20px;
+overflow:auto;
+justify-content:flex-start;
 }
 
 .cv{
-width:100%;
+width:794px;
+min-height:1123px;
 border-radius:24px;
+transform:scale(.43);
+transform-origin:top left;
+margin-right:-450px;
+margin-bottom:-620px;
 }
 
 .cv-modern{
-padding:24px;
+padding:32px;
 }
 
 .header{
@@ -448,17 +456,6 @@ grid-template-columns:1fr;
 font-size:30px;
 }
 
-.sidebar{
-border-right:none;
-border-bottom:1px solid var(--border);
-}
-
-.cv{
-transform:scale(.48);
-transform-origin:top center;
-margin-bottom:-700px;
-}
-
 }
 
 @media(max-width:700px){
@@ -467,6 +464,27 @@ margin-bottom:-700px;
 grid-template-columns:1fr 1fr;
 }
 
+.cv{
+transform:scale(.36);
+margin-right:-510px;
+margin-bottom:-720px;
+}
+
+}
+
+.cv.dark .section-title,
+.cv.tech .section-title,
+.cv.dark .job,
+.cv.tech .job,
+.cv.dark .info p,
+.cv.tech .info p{
+color:rgba(255,255,255,.8);
+}
+
+.cv.dark .tag,
+.cv.tech .tag{
+background:white;
+color:#111827;
 }
 
 </style>
@@ -976,7 +994,7 @@ cv.innerHTML = modernTemplate()
 
 if(type === 'dark'){
 
-cv.className = 'cv cv-modern'
+cv.className = 'cv cv-modern dark'
 
 cv.style.background = '#111827'
 cv.style.color = 'white'
@@ -1002,7 +1020,7 @@ cv.innerHTML = modernTemplate()
 
 if(type === 'tech'){
 
-cv.className = 'cv cv-modern'
+cv.className = 'cv cv-modern tech'
 
 cv.style.background =
 'linear-gradient(135deg,#0f172a,#111827)'
@@ -1365,6 +1383,11 @@ fullText += text + ' '
 
 }
 
+fullText = fullText
+.replace(/\s+/g,' ')
+.replace(/[•]/g,' ')
+.trim()
+
 parseCVText(fullText)
 
 }
@@ -1377,11 +1400,12 @@ reader.readAsArrayBuffer(file)
 
 function parseCVText(text){
 
+text = text.replace(/\s+/g,' ').trim()
+
+/* EMAIL */
+
 const emailMatch =
 text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)
-
-const phoneMatch =
-text.match(/(\+62|08)[0-9\-\s]{8,}/)
 
 if(emailMatch){
 
@@ -1390,6 +1414,11 @@ emailMatch[0]
 
 }
 
+/* PHONE */
+
+const phoneMatch =
+text.match(/(\+62|08)[0-9\-\s]{8,}/)
+
 if(phoneMatch){
 
 document.getElementById('phone').value =
@@ -1397,16 +1426,13 @@ phoneMatch[0]
 
 }
 
-/* SIMPLE NAME DETECT */
+/* NAME */
 
-const lines = text.split(/\\n|\\r/)
-
-if(lines[0]){
+const possibleName =
+text.split(' ').slice(0,3).join(' ')
 
 document.getElementById('name').value =
-lines[0].trim()
-
-}
+possibleName
 
 /* SKILLS */
 
@@ -1417,9 +1443,12 @@ const skillKeywords = [
 'React',
 'Node.js',
 'Figma',
-'UI Design',
 'Tailwind',
-'Python'
+'Python',
+'UI/UX',
+'Laravel',
+'PHP',
+'MySQL'
 ]
 
 const foundSkills =
@@ -1429,12 +1458,40 @@ text.toLowerCase()
 )
 
 document.getElementById('skills').value =
-foundSkills.join(',')
+foundSkills.join(', ')
+
+/* SUMMARY */
+
+document.getElementById('summary').value =
+text.slice(0,250)
 
 /* EXPERIENCE */
 
+const expMatch =
+text.match(
+/(pengalaman|experience)(.*?)(pendidikan|education|skill|keahlian)/i
+)
+
+if(expMatch){
+
 document.getElementById('experience').value =
-text.slice(0,600)
+expMatch[2].slice(0,500)
+
+}
+
+/* EDUCATION */
+
+const eduMatch =
+text.match(
+/(pendidikan|education)(.*?)(skill|keahlian|experience)/i
+)
+
+if(eduMatch){
+
+document.getElementById('education').value =
+eduMatch[2].slice(0,300)
+
+}
 
 updateCV()
 
