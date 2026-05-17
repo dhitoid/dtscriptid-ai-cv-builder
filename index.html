@@ -1,0 +1,542 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DTScriptID - AI CV Builder</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Inter',sans-serif;
+background:#050816;
+color:white;
+overflow-x:hidden;
+}
+
+body::before{
+content:'';
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at top left,#7c3aed55,transparent 30%),
+radial-gradient(circle at bottom right,#06b6d455,transparent 30%);
+z-index:-1;
+}
+
+.container{
+display:grid;
+grid-template-columns:420px 1fr;
+min-height:100vh;
+}
+
+.sidebar{
+padding:24px;
+border-right:1px solid rgba(255,255,255,.1);
+backdrop-filter:blur(20px);
+background:rgba(255,255,255,.03);
+overflow-y:auto;
+}
+
+.preview{
+padding:40px;
+display:flex;
+justify-content:center;
+align-items:flex-start;
+overflow:auto;
+}
+
+.logo{
+font-size:24px;
+font-weight:800;
+margin-bottom:20px;
+}
+
+.glass{
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.1);
+padding:18px;
+border-radius:22px;
+margin-bottom:18px;
+}
+
+.glass h3{
+margin-bottom:14px;
+}
+
+input,textarea,select{
+width:100%;
+padding:14px;
+margin-bottom:12px;
+border:none;
+outline:none;
+border-radius:14px;
+background:rgba(255,255,255,.08);
+color:white;
+font-family:inherit;
+}
+
+textarea{
+min-height:100px;
+resize:vertical;
+}
+
+button{
+border:none;
+padding:14px;
+width:100%;
+border-radius:14px;
+font-weight:700;
+cursor:pointer;
+transition:.3s;
+margin-top:8px;
+}
+
+.primary{
+background:linear-gradient(135deg,#7c3aed,#06b6d4);
+color:white;
+}
+
+.secondary{
+background:rgba(255,255,255,.08);
+color:white;
+}
+
+button:hover{
+transform:translateY(-2px);
+}
+
+.template-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.template-card{
+border:1px solid rgba(255,255,255,.1);
+padding:12px;
+border-radius:16px;
+cursor:pointer;
+background:rgba(255,255,255,.03);
+}
+
+.template-card.active{
+border:2px solid #06b6d4;
+}
+
+.template-preview{
+height:120px;
+border-radius:12px;
+background:white;
+margin-bottom:10px;
+}
+
+.cv{
+width:800px;
+background:white;
+color:black;
+min-height:1120px;
+padding:40px;
+}
+
+.cv-modern .header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:2px solid #111;
+padding-bottom:20px;
+margin-bottom:20px;
+}
+
+.cv-modern h1{
+font-size:34px;
+}
+
+.section{
+margin-bottom:22px;
+}
+
+.section-title{
+font-size:18px;
+font-weight:800;
+margin-bottom:10px;
+text-transform:uppercase;
+}
+
+.cv-creative{
+display:grid;
+grid-template-columns:250px 1fr;
+padding:0;
+}
+
+.cv-creative .left{
+background:#111827;
+color:white;
+padding:40px 24px;
+}
+
+.cv-creative .right{
+padding:40px;
+}
+
+.tag{
+display:inline-block;
+padding:8px 12px;
+border-radius:999px;
+background:#111827;
+color:white;
+font-size:12px;
+margin:4px;
+}
+
+.upload{
+border:2px dashed rgba(255,255,255,.2);
+padding:20px;
+border-radius:18px;
+text-align:center;
+}
+
+small{
+opacity:.7;
+}
+
+@media(max-width:1000px){
+.container{
+grid-template-columns:1fr;
+}
+.preview{
+padding:20px;
+}
+.cv{
+width:100%;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="sidebar">
+
+<div class="logo">DTScriptID AI CV</div>
+
+<div class="glass">
+<h3>Input Data</h3>
+
+<input id="name" placeholder="Nama Lengkap"/>
+<input id="job" placeholder="Posisi / Job Title"/>
+<input id="email" placeholder="Email"/>
+<input id="phone" placeholder="Nomor HP"/>
+<input id="location" placeholder="Lokasi"/>
+
+<textarea id="summary" placeholder="Tentang diri"></textarea>
+
+<textarea id="experience" placeholder="Pengalaman kerja"></textarea>
+
+<textarea id="education" placeholder="Pendidikan"></textarea>
+
+<textarea id="skills" placeholder="Skill (pisahkan dengan koma)"></textarea>
+
+<button class="primary" onclick="generateAI()">✨ AI Generate</button>
+</div>
+
+<div class="glass">
+<h3>Upload CV Lama</h3>
+
+<div class="upload">
+<input type="file" id="oldCV"/>
+<small>Upload CV lama untuk referensi AI</small>
+</div>
+</div>
+
+<div class="glass">
+<h3>Pilih Template</h3>
+
+<div class="template-grid">
+
+<div class="template-card active" onclick="selectTemplate('modern',this)">
+<div class="template-preview"></div>
+Modern
+</div>
+
+<div class="template-card" onclick="selectTemplate('creative',this)">
+<div class="template-preview" style="background:linear-gradient(90deg,#111827 40%,white 40%)"></div>
+Creative
+</div>
+
+</div>
+</div>
+
+<div class="glass">
+<h3>Export</h3>
+
+<button class="primary" onclick="downloadPDF()">Download PDF</button>
+<button class="secondary" onclick="window.print()">Print CV</button>
+</div>
+
+</div>
+
+<div class="preview">
+<div id="cv" class="cv cv-modern">
+
+<div class="header">
+<div>
+<h1 id="previewName">Nama Kamu</h1>
+<p id="previewJob">UI/UX Designer</p>
+</div>
+
+<div>
+<p id="previewEmail">email@gmail.com</p>
+<p id="previewPhone">08123456789</p>
+<p id="previewLocation">Indonesia</p>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">Profile</div>
+<p id="previewSummary">
+Professional creative designer with strong passion in digital experience.
+</p>
+</div>
+
+<div class="section">
+<div class="section-title">Experience</div>
+<p id="previewExperience">
+Frontend Developer at DTScriptID
+</p>
+</div>
+
+<div class="section">
+<div class="section-title">Education</div>
+<p id="previewEducation">
+Bachelor Degree
+</p>
+</div>
+
+<div class="section">
+<div class="section-title">Skills</div>
+<div id="previewSkills">
+<span class="tag">HTML</span>
+<span class="tag">CSS</span>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+const inputs = [
+'name',
+'job',
+'email',
+'phone',
+'location',
+'summary',
+'experience',
+'education',
+'skills'
+]
+
+inputs.forEach(id=>{
+document.getElementById(id).addEventListener('input',updatePreview)
+})
+
+function updatePreview(){
+
+document.getElementById('previewName').innerText =
+document.getElementById('name').value || 'Nama Kamu'
+
+document.getElementById('previewJob').innerText =
+document.getElementById('job').value || 'Job Title'
+
+document.getElementById('previewEmail').innerText =
+document.getElementById('email').value || 'Email'
+
+document.getElementById('previewPhone').innerText =
+document.getElementById('phone').value || 'Phone'
+
+document.getElementById('previewLocation').innerText =
+document.getElementById('location').value || 'Location'
+
+document.getElementById('previewSummary').innerText =
+document.getElementById('summary').value || 'Tentang diri'
+
+document.getElementById('previewExperience').innerText =
+document.getElementById('experience').value || 'Pengalaman'
+
+document.getElementById('previewEducation').innerText =
+document.getElementById('education').value || 'Pendidikan'
+
+const skills =
+document.getElementById('skills').value.split(',')
+
+document.getElementById('previewSkills').innerHTML =
+skills.map(skill=>`<span class="tag">${skill}</span>`).join('')
+}
+
+function selectTemplate(type,el){
+
+document.querySelectorAll('.template-card')
+.forEach(card=>card.classList.remove('active'))
+
+el.classList.add('active')
+
+const cv = document.getElementById('cv')
+
+if(type === 'modern'){
+cv.className = 'cv cv-modern'
+
+cv.innerHTML = `
+<div class="header">
+<div>
+<h1 id="previewName">${document.getElementById('name').value || 'Nama Kamu'}</h1>
+<p id="previewJob">${document.getElementById('job').value || 'Job Title'}</p>
+</div>
+
+<div>
+<p id="previewEmail">${document.getElementById('email').value || 'Email'}</p>
+<p id="previewPhone">${document.getElementById('phone').value || 'Phone'}</p>
+<p id="previewLocation">${document.getElementById('location').value || 'Location'}</p>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">Profile</div>
+<p id="previewSummary">${document.getElementById('summary').value}</p>
+</div>
+
+<div class="section">
+<div class="section-title">Experience</div>
+<p id="previewExperience">${document.getElementById('experience').value}</p>
+</div>
+
+<div class="section">
+<div class="section-title">Education</div>
+<p id="previewEducation">${document.getElementById('education').value}</p>
+</div>
+
+<div class="section">
+<div class="section-title">Skills</div>
+<div id="previewSkills">
+${document.getElementById('skills').value.split(',').map(skill=>`<span class="tag">${skill}</span>`).join('')}
+</div>
+</div>
+`
+}
+
+if(type === 'creative'){
+
+cv.className = 'cv cv-creative'
+
+cv.innerHTML = `
+<div class="left">
+<h1 id="previewName">${document.getElementById('name').value || 'Nama Kamu'}</h1>
+<p id="previewJob">${document.getElementById('job').value || 'Job Title'}</p>
+
+<br><br>
+
+<h3>Email</h3>
+<p id="previewEmail">${document.getElementById('email').value || 'Email'}</p>
+
+<br>
+
+<h3>Phone</h3>
+<p id="previewPhone">${document.getElementById('phone').value || 'Phone'}</p>
+
+<br>
+
+<h3>Skills</h3>
+
+<div id="previewSkills">
+${document.getElementById('skills').value.split(',').map(skill=>`<span class="tag">${skill}</span>`).join('')}
+</div>
+</div>
+
+<div class="right">
+
+<div class="section">
+<div class="section-title">About Me</div>
+<p id="previewSummary">${document.getElementById('summary').value}</p>
+</div>
+
+<div class="section">
+<div class="section-title">Experience</div>
+<p id="previewExperience">${document.getElementById('experience').value}</p>
+</div>
+
+<div class="section">
+<div class="section-title">Education</div>
+<p id="previewEducation">${document.getElementById('education').value}</p>
+</div>
+
+</div>
+`
+}
+}
+
+async function generateAI(){
+
+const btn = event.target
+
+btn.innerHTML = 'Generating AI...'
+btn.disabled = true
+
+await new Promise(resolve=>setTimeout(resolve,1500))
+
+if(!document.getElementById('summary').value){
+document.getElementById('summary').value =
+'Creative and detail-oriented professional with strong communication skills and experience in digital technology.'
+}
+
+if(!document.getElementById('experience').value){
+document.getElementById('experience').value =
+'Worked on multiple digital projects, collaborated with teams, and handled client requirements professionally.'
+}
+
+if(!document.getElementById('skills').value){
+document.getElementById('skills').value =
+'HTML,CSS,JavaScript,UI Design,Communication'
+}
+
+updatePreview()
+
+btn.innerHTML = '✨ AI Generate'
+btn.disabled = false
+}
+
+function downloadPDF(){
+
+const element = document.getElementById('cv')
+
+const opt = {
+margin:0,
+filename:'DTScriptID-CV.pdf',
+image:{ type:'jpeg', quality:1 },
+html2canvas:{ scale:2 },
+jsPDF:{ unit:'mm', format:'a4', orientation:'portrait' }
+}
+
+html2pdf().set(opt).from(element).save()
+}
+
+updatePreview()
+</script>
+
+</body>
+</html>
