@@ -1589,11 +1589,37 @@ Bachelor Degree
 <script>
 
 /* =========================
+ELEMENT SAFE
+========================= */
+
+const $ = (id)=>document.getElementById(id)
+
+const cv = $('cv')
+const cvSidebar = $('cvSidebar')
+const cvMain = $('cvMain')
+const avatar = $('avatar')
+
+const island = $('island')
+const islandText = $('islandText')
+const progressBar = $('progressBar')
+
+const atsScore = $('atsScore')
+
+const previewName = $('previewName')
+const previewJob = $('previewJob')
+const previewEmail = $('previewEmail')
+const previewPhone = $('previewPhone')
+const previewLocation = $('previewLocation')
+const previewSummary = $('previewSummary')
+const previewExperience = $('previewExperience')
+const previewEducation = $('previewEducation')
+const previewSkills = $('previewSkills')
+
+/* =========================
 FIELDS
 ========================= */
 
 const fields = [
-
 'name',
 'job',
 'email',
@@ -1603,8 +1629,64 @@ const fields = [
 'experience',
 'education',
 'skills'
-
 ]
+
+/* =========================
+DEFAULT DATA
+========================= */
+
+const defaults = {
+
+name:'Nama Kamu',
+
+job:'Frontend Developer',
+
+email:'email@gmail.com',
+
+phone:'+62',
+
+location:'Indonesia',
+
+summary:
+'Creative frontend developer with strong passion in building premium digital experiences.',
+
+experience:
+`Frontend Developer at DTScriptID
+
+• Build modern UI
+• Create responsive website
+• Optimize performance`,
+
+education:
+`SMK Multimedia
+2020 - 2023`,
+
+skills:
+'HTML,CSS,JavaScript'
+
+}
+
+/* =========================
+GET VALUE
+========================= */
+
+function getValue(id){
+
+return $(id)?.value?.trim() || ''
+
+}
+
+/* =========================
+ESCAPE HTML
+========================= */
+
+function escapeHTML(text){
+
+return text
+.replace(/</g,'&lt;')
+.replace(/>/g,'&gt;')
+
+}
 
 /* =========================
 UPDATE CV
@@ -1612,50 +1694,102 @@ UPDATE CV
 
 function updateCV(){
 
-const get = id =>
-document.getElementById(id).value
-
 previewName.innerText =
-get('name') || 'Nama Kamu'
+getValue('name') || defaults.name
 
 previewJob.innerText =
-get('job') || 'Frontend Developer'
+getValue('job') || defaults.job
 
 previewEmail.innerText =
-get('email') || 'email@gmail.com'
+getValue('email') || defaults.email
 
 previewPhone.innerText =
-get('phone') || '+62'
+getValue('phone') || defaults.phone
 
 previewLocation.innerText =
-get('location') || 'Indonesia'
+getValue('location') || defaults.location
 
 previewSummary.innerText =
-get('summary') || 'About Me'
+getValue('summary') || defaults.summary
 
 previewExperience.innerText =
-get('experience') || 'Experience'
+getValue('experience') || defaults.experience
 
 previewEducation.innerText =
-get('education') || 'Education'
+getValue('education') || defaults.education
 
-const skills =
-get('skills')
+/* SKILLS */
+
+const skillsRaw =
+getValue('skills') || defaults.skills
+
+const skills = skillsRaw
 .split(',')
-.filter(skill=>skill.trim() !== '')
+.map(skill=>skill.trim())
+.filter(skill=>skill !== '')
 
-previewSkills.innerHTML =
-skills.map(skill=>
-`
-<div class="tag">
-${skill}
-</div>
-`
-).join('')
+previewSkills.innerHTML = ''
+
+skills.forEach(skill=>{
+
+const tag = document.createElement('div')
+
+tag.className = 'tag'
+
+tag.innerText = skill
+
+previewSkills.appendChild(tag)
+
+})
 
 updateATS()
 
 saveData()
+
+}
+
+/* =========================
+ATS SYSTEM
+========================= */
+
+function updateATS(){
+
+let score = 20
+
+if(getValue('name')) score += 10
+if(getValue('job')) score += 10
+if(getValue('email')) score += 10
+if(getValue('phone')) score += 10
+if(getValue('location')) score += 5
+if(getValue('summary').length > 40) score += 15
+if(getValue('experience').length > 40) score += 15
+if(getValue('education')) score += 10
+if(getValue('skills')) score += 15
+
+if(score > 100){
+score = 100
+}
+
+atsScore.innerText = score + '%'
+
+}
+
+/* =========================
+TEXTAREA AUTO HEIGHT
+========================= */
+
+function autoResize(){
+
+document
+.querySelectorAll('textarea')
+.forEach(textarea=>{
+
+textarea.style.height='auto'
+
+textarea.style.height =
+textarea.scrollHeight+'px'
+
+})
 
 }
 
@@ -1665,64 +1799,98 @@ LISTENER
 
 fields.forEach(id=>{
 
-document
-.getElementById(id)
-.addEventListener('input',updateCV)
+$(id).addEventListener('input',()=>{
 
-})
+updateCV()
 
-/* =========================
-TEXTAREA AUTO HEIGHT
-========================= */
-
-document
-.querySelectorAll('textarea')
-.forEach(textarea=>{
-
-textarea.addEventListener('input',()=>{
-
-textarea.style.height='auto'
-
-textarea.style.height =
-textarea.scrollHeight+'px'
+autoResize()
 
 })
 
 })
 
 /* =========================
-PHOTO
+PHOTO SYSTEM
 ========================= */
 
-photoInput.addEventListener('change',function(e){
+$('photoInput')
+.addEventListener('change',function(e){
 
 const file = e.target.files[0]
 
-if(file){
+if(!file) return
+
+/* VALIDATION */
+
+if(!file.type.startsWith('image/')){
+
+alert('File harus berupa gambar')
+return
+
+}
+
+/* MAX 5MB */
+
+if(file.size > 5 * 1024 * 1024){
+
+alert('Ukuran gambar maksimal 5MB')
+return
+
+}
+
+showIsland('Uploading photo...')
+setProgress(30)
 
 const reader = new FileReader()
 
 reader.onload = function(event){
 
-avatar.src =
+avatar.src = event.target.result
+
+localStorage.setItem(
+'dtscript_avatar',
 event.target.result
+)
+
+setProgress(100)
+
+setTimeout(()=>{
+
+hideIsland()
+setProgress(0)
+
+},700)
 
 }
 
 reader.readAsDataURL(file)
 
-}
-
 })
 
 /* =========================
-SEARCH
+LOAD AVATAR
 ========================= */
 
-templateSearch.addEventListener('input',()=>{
+const savedAvatar =
+localStorage.getItem('dtscript_avatar')
+
+if(savedAvatar){
+
+avatar.src = savedAvatar
+
+}
+
+/* =========================
+SEARCH TEMPLATE
+========================= */
+
+$('templateSearch')
+.addEventListener('input',()=>{
 
 const value =
-templateSearch.value.toLowerCase()
+$('templateSearch')
+.value
+.toLowerCase()
 
 document
 .querySelectorAll('.template-card')
@@ -1741,14 +1909,14 @@ text.includes(value)
 })
 
 /* =========================
-FAVORITE
+FAVORITE SYSTEM
 ========================= */
 
 document
 .querySelectorAll('.favorite-btn')
 .forEach(btn=>{
 
-btn.addEventListener('click',function(e){
+btn.addEventListener('click',(e)=>{
 
 e.stopPropagation()
 
@@ -1784,26 +1952,21 @@ island.classList.remove('show')
 function setProgress(percent){
 
 progressBar.style.width =
-percent+'%'
+percent + '%'
 
 }
 
 /* =========================
-ATS
+WAIT
 ========================= */
 
-function updateATS(){
+function wait(ms){
 
-let score = 40
+return new Promise(resolve=>{
 
-if(name.value) score += 10
-if(job.value) score += 10
-if(summary.value) score += 10
-if(experience.value) score += 10
-if(skills.value) score += 20
+setTimeout(resolve,ms)
 
-atsScore.innerText =
-score+'%'
+})
 
 }
 
@@ -1817,8 +1980,7 @@ const data = {}
 
 fields.forEach(id=>{
 
-data[id] =
-document.getElementById(id).value
+data[id] = getValue(id)
 
 })
 
@@ -1829,10 +1991,15 @@ JSON.stringify(data)
 
 }
 
+/* =========================
+LOAD DATA
+========================= */
+
 function loadData(){
 
-const data =
-JSON.parse(
+try{
+
+const data = JSON.parse(
 localStorage.getItem('dtscript_cv')
 )
 
@@ -1840,73 +2007,80 @@ if(!data) return
 
 fields.forEach(id=>{
 
-if(data[id]){
+if(data[id] !== undefined){
 
-document.getElementById(id).value =
-data[id]
+$(id).value = data[id]
 
 }
 
 })
 
-updateCV()
+}catch(err){
+
+console.log(err)
 
 }
 
-loadData()
+}
 
 /* =========================
-AI GENERATE
+AI GENERATOR
 ========================= */
 
 async function generateAI(){
 
 showIsland('Generating AI CV...')
+setProgress(10)
 
-setProgress(20)
+await wait(500)
 
-await wait(700)
+if(!getValue('summary')){
 
-if(!summary.value){
-
-summary.value =
-'Creative and detail-oriented professional with strong experience in frontend development, UI design, responsive website systems, and modern digital experiences.'
+$('summary').value =
+'Creative and detail-oriented professional with expertise in frontend development, premium UI systems, responsive design, animation interface, and modern website architecture.'
 
 }
 
-setProgress(50)
+setProgress(40)
 
-await wait(700)
+await wait(500)
 
-if(!experience.value){
+if(!getValue('experience')){
 
-experience.value =
+$('experience').value =
 `Frontend Developer
 DTScriptID (2024 - Present)
 
-• Build premium UI website
+• Build premium website UI
 • Create responsive landing page
-• Optimize performance & UX
-• Handle frontend animation system`
+• Optimize website performance
+• Develop animation interaction
+• Handle frontend system architecture`
 
 }
 
-if(!education.value){
+setProgress(70)
 
-education.value =
+await wait(500)
+
+if(!getValue('education')){
+
+$('education').value =
 `SMK Multimedia
 2020 - 2023`
 
 }
 
-if(!skills.value){
+if(!getValue('skills')){
 
-skills.value =
-'HTML,CSS,JavaScript,UI Design,Figma,Tailwind'
+$('skills').value =
+'HTML,CSS,JavaScript,UI Design,Figma,Tailwind,GSAP'
 
 }
 
 updateCV()
+
+autoResize()
 
 setProgress(100)
 
@@ -1920,22 +2094,14 @@ setProgress(0)
 }
 
 /* =========================
-WAIT
+TEMPLATE SYSTEM
 ========================= */
 
-function wait(ms){
-
-return new Promise(resolve=>
-setTimeout(resolve,ms)
-)
-
-}
-
-/* =========================
-TEMPLATE
-========================= */
+let currentTemplate = 'modern'
 
 function changeTemplate(type,el){
+
+currentTemplate = type
 
 document
 .querySelectorAll('.template-card')
@@ -1947,14 +2113,25 @@ card.classList.remove('active')
 
 el.classList.add('active')
 
-cv.className = 'cv '+type
-
 /* RESET */
 
+cv.className = 'cv'
+
 cvSidebar.style.display = 'block'
-cvMain.style.background = 'white'
+
+cvMain.style.display = 'block'
+
+/* APPLY */
+
+if(type === 'modern'){
+
+cv.classList.add('modern')
+
+}
 
 if(type === 'minimal'){
+
+cv.classList.add('minimal')
 
 cvSidebar.style.display = 'none'
 
@@ -1962,6 +2139,8 @@ cvSidebar.style.display = 'none'
 
 if(type === 'creative'){
 
+cv.classList.add('creative')
+
 cvSidebar.style.display = 'none'
 
 }
@@ -1969,44 +2148,57 @@ cvSidebar.style.display = 'none'
 }
 
 /* =========================
-ZOOM
+ZOOM SYSTEM
 ========================= */
 
 let zoomLevel = 1
 
-function zoomIn(){
-
-zoomLevel += .1
+function applyZoom(){
 
 cv.style.transform =
 `scale(${zoomLevel})`
+
+}
+
+function zoomIn(){
+
+if(zoomLevel >= 1.8) return
+
+zoomLevel += 0.1
+
+applyZoom()
 
 }
 
 function zoomOut(){
 
-zoomLevel -= .1
+if(zoomLevel <= 0.4) return
 
-if(zoomLevel < .4){
-zoomLevel = .4
-}
+zoomLevel -= 0.1
 
-cv.style.transform =
-`scale(${zoomLevel})`
+applyZoom()
 
 }
 
 /* =========================
-PDF
+DOWNLOAD PDF
 ========================= */
 
 async function downloadPDF(){
 
-showIsland('Generating PDF...')
+try{
 
+showIsland('Generating PDF...')
 setProgress(20)
 
+const originalTransform =
+cv.style.transform
+
+cv.style.transform = 'scale(1)'
+
 await wait(500)
+
+setProgress(50)
 
 await html2pdf()
 .set({
@@ -2014,8 +2206,7 @@ await html2pdf()
 margin:0,
 
 filename:
-(name.value || 'CV')
-+'.pdf',
+(getValue('name') || 'CV') + '.pdf',
 
 image:{
 type:'jpeg',
@@ -2023,19 +2214,27 @@ quality:1
 },
 
 html2canvas:{
-scale:4,
-useCORS:true
+scale:3,
+useCORS:true,
+letterRendering:true
 },
 
 jsPDF:{
 unit:'mm',
 format:'a4',
 orientation:'portrait'
+},
+
+pagebreak:{
+mode:['avoid-all']
 }
 
 })
 .from(cv)
 .save()
+
+cv.style.transform =
+originalTransform
 
 setProgress(100)
 
@@ -2046,23 +2245,42 @@ setProgress(0)
 
 },1000)
 
+}catch(err){
+
+console.log(err)
+
+alert('Gagal generate PDF')
+
+hideIsland()
+
+}
+
 }
 
 /* =========================
-JPG
+DOWNLOAD JPG
 ========================= */
 
 async function downloadJPG(){
 
-showIsland('Generating JPG...')
+try{
 
+showIsland('Generating JPG...')
 setProgress(30)
+
+const originalTransform =
+cv.style.transform
+
+cv.style.transform = 'scale(1)'
+
+await wait(300)
 
 const canvas =
 await html2canvas(cv,{
 
-scale:4,
-useCORS:true
+scale:3,
+useCORS:true,
+backgroundColor:null
 
 })
 
@@ -2072,12 +2290,22 @@ const link =
 document.createElement('a')
 
 link.download =
-(name.value || 'CV')+'.jpg'
+(getValue('name') || 'CV') + '.jpg'
 
 link.href =
-canvas.toDataURL('image/jpeg',1)
+canvas.toDataURL(
+'image/jpeg',
+1
+)
+
+document.body.appendChild(link)
 
 link.click()
+
+document.body.removeChild(link)
+
+cv.style.transform =
+originalTransform
 
 setProgress(100)
 
@@ -2088,13 +2316,70 @@ setProgress(0)
 
 },1000)
 
+}catch(err){
+
+console.log(err)
+
+alert('Gagal generate JPG')
+
+hideIsland()
+
 }
+
+}
+
+/* =========================
+KEYBOARD SHORTCUT
+========================= */
+
+document.addEventListener('keydown',(e)=>{
+
+/* CTRL + S */
+
+if((e.ctrlKey || e.metaKey)
+&& e.key === 's'){
+
+e.preventDefault()
+
+downloadPDF()
+
+}
+
+/* CTRL + + */
+
+if((e.ctrlKey || e.metaKey)
+&& e.key === '='){
+
+e.preventDefault()
+
+zoomIn()
+
+}
+
+/* CTRL + - */
+
+if((e.ctrlKey || e.metaKey)
+&& e.key === '-'){
+
+e.preventDefault()
+
+zoomOut()
+
+}
+
+})
 
 /* =========================
 INIT
 ========================= */
 
+loadData()
+
 updateCV()
+
+autoResize()
+
+applyZoom()
 
 </script>
 
