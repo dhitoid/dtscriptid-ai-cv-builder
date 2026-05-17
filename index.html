@@ -1074,6 +1074,10 @@ margin-bottom:-720px;
 
 }
 
+.preview .cv{
+transition:transform .3s ease;
+}
+
 .section{
 page-break-inside:avoid;
 }
@@ -1712,6 +1716,7 @@ Luxe Corporate
 
 <div
 class="template-card"
+data-template="tokyo"
 onclick="changeTemplate('tokyo',this)"
 >
 
@@ -1761,8 +1766,9 @@ Tokyo Corporate
 
 <div
 class="template-card"
+data-template="glass"
 onclick="changeTemplate('glass',this)"
->
+>>
 
 <div class="badge">GLASS</div>
 
@@ -1800,6 +1806,7 @@ Glass Morphism
 
 <div
 class="template-card"
+data-template="editorial"
 onclick="changeTemplate('editorial',this)"
 >
 
@@ -1838,6 +1845,7 @@ Editorial Vogue
 
 <div
 class="template-card"
+data-template="neon"
 onclick="changeTemplate('neon',this)"
 >
 
@@ -2344,7 +2352,7 @@ card.innerText.toLowerCase()
 
 card.style.display =
 text.includes(value)
-? 'block'
+? ''
 : 'none'
 
 })
@@ -2569,26 +2577,49 @@ type === 'editorial' ||
 type === 'neon'
 ){
 cvSidebar.style.display = 'none'
+cvMain.style.display = 'block'
 }
-
+else{
+cvSidebar.style.display = 'block'
+cvMain.style.display = 'block'
+}
+applyZoom()
 }
 
 /* =========================
 ZOOM SYSTEM
 ========================= */
 
-let zoomLevel = 1
+let zoomLevel = window.innerWidth < 1000 ? 0.55 : 1
 
 function applyZoom(){
 
+if(window.innerWidth < 1000){
+
 cv.style.transform =
 `scale(${zoomLevel})`
+
+cv.style.marginBottom =
+`${(1 - zoomLevel) * -1200}px`
+
+cv.style.marginRight =
+`${(1 - zoomLevel) * -700}px`
+
+}else{
+
+cv.style.transform =
+`scale(${zoomLevel})`
+
+cv.style.marginBottom = '0'
+cv.style.marginRight = '0'
+
+}
 
 }
 
 function zoomIn(){
 
-if(zoomLevel >= 1.8) return
+if(zoomLevel >= 2) return
 
 zoomLevel += 0.1
 
@@ -2598,7 +2629,7 @@ applyZoom()
 
 function zoomOut(){
 
-if(zoomLevel <= 0.4) return
+if(zoomLevel <= 0.3) return
 
 zoomLevel -= 0.1
 
@@ -2606,9 +2637,7 @@ applyZoom()
 
 }
 
-/* =========================
-DOWNLOAD CORE
-========================= */
+window.addEventListener('resize',applyZoom)
 
 /* =========================
 EXPORT ENGINE
@@ -2824,29 +2853,22 @@ await createHighQualityCanvas()
 
 setProgress(80)
 
-const dataURL = canvas.toDataURL('image/png')
-
-const link = document.createElement('a')
-
-link.href = dataURL
-link.download = `${getValue('name') || 'CV'}.png`
-
-link.click()
+const dataURL =
+canvas.toDataURL('image/png')
 
 const link =
 document.createElement('a')
 
+link.href = dataURL
+
 link.download =
 `${getValue('name') || 'CV'}.png`
 
-link.href =
-URL.createObjectURL(blob)
+document.body.appendChild(link)
 
 link.click()
 
-URL.revokeObjectURL(link.href)
-
-},'image/png')
+document.body.removeChild(link)
 
 restoreCVExport(state)
 
