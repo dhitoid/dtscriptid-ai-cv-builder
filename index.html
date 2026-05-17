@@ -12,6 +12,10 @@ name="viewport"content="width=device-width,initial-scale=1,maximum-scale=1,user-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+</script>
 
 <style>
 
@@ -487,6 +491,69 @@ background:white;
 color:#111827;
 }
 
+.cv.canva{
+background:
+linear-gradient(
+135deg,
+#8b5cf6,
+#ec4899
+);
+color:white;
+}
+
+.cv.canva .tag{
+background:white;
+color:#111;
+}
+
+.cv.corporate{
+background:#f8fafc;
+color:#111827;
+border-top:12px solid #3b82f6;
+}
+
+.cv.gradient{
+background:
+linear-gradient(
+180deg,
+#0f172a,
+#111827
+);
+color:white;
+}
+
+.cv.gradient .tag{
+background:white;
+color:#111827;
+}
+
+.template{
+position:relative;
+overflow:hidden;
+}
+
+.template::before{
+content:'';
+position:absolute;
+inset:0;
+background:
+linear-gradient(
+180deg,
+transparent,
+rgba(255,255,255,.06)
+);
+pointer-events:none;
+}
+
+.template-preview::after{
+content:'';
+position:absolute;
+inset:10px;
+border-radius:10px;
+background:
+rgba(255,255,255,.4);
+}
+
 </style>
 </head>
 
@@ -666,6 +733,48 @@ Tech
 
 </div>
 
+<div class="template"
+onclick="changeTemplate('canva',this)">
+
+<div class="template-preview"
+style="
+background:
+linear-gradient(135deg,#8b5cf6,#ec4899);
+">
+</div>
+
+Canva
+
+</div>
+
+<div class="template"
+onclick="changeTemplate('corporate',this)">
+
+<div class="template-preview"
+style="
+background:
+linear-gradient(135deg,#1e293b,#334155);
+">
+</div>
+
+Corporate
+
+</div>
+
+<div class="template"
+onclick="changeTemplate('gradient',this)">
+
+<div class="template-preview"
+style="
+background:
+linear-gradient(135deg,#06b6d4,#3b82f6,#8b5cf6);
+">
+</div>
+
+Gradient
+
+</div>
+
 </div>
 
 </div>
@@ -707,7 +816,7 @@ PDF/TXT otomatis dibaca AI
 
 <br><br>
 
-<button class="secondary" onclick="window.print()">
+<button class="secondary" onclick="printCV()">
 🖨 Print CV
 </button>
 
@@ -866,6 +975,65 @@ textarea.scrollHeight+'px'
 })
 
 })
+
+function printCV(){
+
+const cv =
+document.getElementById('cv').outerHTML
+
+const printWindow =
+window.open('','','width=900,height=1200')
+
+printWindow.document.write(`
+<html>
+<head>
+<title>Print CV</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+padding:0;
+font-family:Inter,sans-serif;
+background:white;
+}
+
+.cv{
+width:210mm;
+min-height:297mm;
+margin:auto;
+background:white;
+color:black;
+}
+
+img{
+max-width:100%;
+}
+
+</style>
+
+</head>
+
+<body>
+
+${cv}
+
+<script>
+window.onload = () => {
+window.print()
+window.close()
+}
+<\/script>
+
+</body>
+</html>
+`)
+
+printWindow.document.close()
+
+}
 
 /* UPDATE CV */
 
@@ -1026,6 +1194,36 @@ cv.style.background =
 'linear-gradient(135deg,#0f172a,#111827)'
 
 cv.style.color = 'white'
+
+cv.innerHTML = modernTemplate()
+
+}
+
+/* CANVA */
+
+if(type === 'canva'){
+
+cv.className = 'cv cv-modern canva'
+
+cv.innerHTML = modernTemplate()
+
+}
+
+/* CORPORATE */
+
+if(type === 'corporate'){
+
+cv.className = 'cv cv-modern corporate'
+
+cv.innerHTML = modernTemplate()
+
+}
+
+/* GRADIENT */
+
+if(type === 'gradient'){
+
+cv.className = 'cv cv-modern gradient'
 
 cv.innerHTML = modernTemplate()
 
@@ -1292,15 +1490,31 @@ hideIsland()
 
 async function downloadPDF(){
 
-showIsland('Preparing PDF...')
+try{
 
-const cv =
-document.getElementById('cv')
+showIsland('Generating Premium PDF...')
+
+const cv = document.getElementById('cv')
+
+/* REMOVE SCALE MOBILE */
+
+const oldTransform = cv.style.transform
+const oldMargin = cv.style.margin
+
+cv.style.transform = 'scale(1)'
+cv.style.margin = '0'
+
+/* WAIT RENDER */
+
+await new Promise(resolve=>setTimeout(resolve,500))
 
 const opt = {
 
-margin:0,
-filename:'DTScriptID-CV.pdf',
+margin:[0,0,0,0],
+
+filename:
+(document.getElementById('name').value || 'CV')
++'.pdf',
 
 image:{
 type:'jpeg',
@@ -1308,8 +1522,11 @@ quality:1
 },
 
 html2canvas:{
-scale:3,
+scale:4,
 useCORS:true,
+logging:false,
+letterRendering:true,
+scrollX:0,
 scrollY:0
 },
 
@@ -1317,6 +1534,10 @@ jsPDF:{
 unit:'mm',
 format:'a4',
 orientation:'portrait'
+},
+
+pagebreak:{
+mode:['avoid-all']
 }
 
 }
@@ -1326,7 +1547,22 @@ await html2pdf()
 .from(cv)
 .save()
 
+/* RESTORE */
+
+cv.style.transform = oldTransform
+cv.style.margin = oldMargin
+
 hideIsland()
+
+}catch(err){
+
+console.log(err)
+
+showIsland('PDF Failed ❌')
+
+setTimeout(hideIsland,2000)
+
+}
 
 }
 
@@ -1400,55 +1636,91 @@ reader.readAsArrayBuffer(file)
 
 function parseCVText(text){
 
-text = text.replace(/\s+/g,' ').trim()
+text = text
+.replace(/\s+/g,' ')
+.replace(/[•]/g,' ')
+.trim()
 
 /* EMAIL */
 
-const emailMatch =
+const email =
 text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)
 
-if(emailMatch){
+if(email){
 
 document.getElementById('email').value =
-emailMatch[0]
+email[0]
 
 }
 
 /* PHONE */
 
-const phoneMatch =
+const phone =
 text.match(/(\+62|08)[0-9\-\s]{8,}/)
 
-if(phoneMatch){
+if(phone){
 
 document.getElementById('phone').value =
-phoneMatch[0]
+phone[0]
 
 }
 
 /* NAME */
 
-const possibleName =
-text.split(' ').slice(0,3).join(' ')
+const words = text.split(' ')
+
+let detectedName = words
+.slice(0,2)
+.join(' ')
 
 document.getElementById('name').value =
-possibleName
+detectedName
+
+/* JOB */
+
+const jobs = [
+'Frontend Developer',
+'Backend Developer',
+'UI UX Designer',
+'Graphic Designer',
+'Web Developer',
+'Mobile Developer',
+'Software Engineer'
+]
+
+const foundJob =
+jobs.find(job =>
+text.toLowerCase()
+.includes(job.toLowerCase())
+)
+
+if(foundJob){
+
+document.getElementById('job').value =
+foundJob
+
+}
 
 /* SKILLS */
 
 const skillKeywords = [
+
 'HTML',
 'CSS',
 'JavaScript',
 'React',
+'Vue',
 'Node.js',
+'Express',
+'MongoDB',
 'Figma',
 'Tailwind',
 'Python',
-'UI/UX',
 'Laravel',
 'PHP',
-'MySQL'
+'MySQL',
+'UI/UX'
+
 ]
 
 const foundSkills =
@@ -1463,35 +1735,63 @@ foundSkills.join(', ')
 /* SUMMARY */
 
 document.getElementById('summary').value =
-text.slice(0,250)
+text.slice(0,300)
 
 /* EXPERIENCE */
 
-const expMatch =
-text.match(
-/(pengalaman|experience)(.*?)(pendidikan|education|skill|keahlian)/i
-)
+const experienceKeywords = [
+'pengalaman',
+'experience',
+'work experience',
+'riwayat kerja'
+]
 
-if(expMatch){
+let expText = ''
 
-document.getElementById('experience').value =
-expMatch[2].slice(0,500)
+experienceKeywords.forEach(key=>{
+
+if(text.toLowerCase().includes(key)){
+
+const start =
+text.toLowerCase().indexOf(key)
+
+expText =
+text.slice(start,start+700)
 
 }
+
+})
+
+document.getElementById('experience').value =
+expText || 'Experience detected from uploaded CV.'
 
 /* EDUCATION */
 
-const eduMatch =
-text.match(
-/(pendidikan|education)(.*?)(skill|keahlian|experience)/i
-)
+const eduKeywords = [
+'pendidikan',
+'education',
+'universitas',
+'sekolah'
+]
 
-if(eduMatch){
+let eduText = ''
 
-document.getElementById('education').value =
-eduMatch[2].slice(0,300)
+eduKeywords.forEach(key=>{
+
+if(text.toLowerCase().includes(key)){
+
+const start =
+text.toLowerCase().indexOf(key)
+
+eduText =
+text.slice(start,start+400)
 
 }
+
+})
+
+document.getElementById('education').value =
+eduText || 'Education detected from uploaded CV.'
 
 updateCV()
 
