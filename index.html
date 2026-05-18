@@ -30,7 +30,6 @@ box-sizing:border-box;
 }
 
 :root{
-
 --bg:#040816;
 --card:rgba(255,255,255,.06);
 --border:rgba(255,255,255,.08);
@@ -41,7 +40,6 @@ box-sizing:border-box;
 
 --text:#fff;
 --muted:rgba(255,255,255,.65);
-
 }
 
 html{
@@ -74,7 +72,6 @@ animation:aurora 16s linear infinite;
 }
 
 @keyframes aurora{
-
 0%{
 transform:rotate(0deg) scale(1);
 }
@@ -86,7 +83,6 @@ transform:rotate(180deg) scale(1.15);
 100%{
 transform:rotate(360deg) scale(1);
 }
-
 }
 
 /* =========================
@@ -107,7 +103,6 @@ TOPBAR
 ========================= */
 
 .topbar{
-
 position:sticky;
 top:0;
 z-index:999;
@@ -119,11 +114,9 @@ align-items:center;
 padding:18px 24px;
 
 backdrop-filter:blur(20px);
-
 background:rgba(4,8,22,.72);
 
 border-bottom:1px solid rgba(255,255,255,.08);
-
 }
 
 .logo-wrap{
@@ -148,7 +141,6 @@ linear-gradient(
 }
 
 .live-badge{
-
 padding:10px 14px;
 border-radius:999px;
 
@@ -161,7 +153,6 @@ linear-gradient(
 #7c3aed,
 #06b6d4
 );
-
 }
 
 .top-actions{
@@ -170,7 +161,6 @@ gap:12px;
 }
 
 .top-btn{
-
 border:none;
 cursor:pointer;
 
@@ -198,12 +188,9 @@ LAYOUT
 ========================= */
 
 .container{
-
 display:grid;
 grid-template-columns:420px 1fr;
-
 min-height:100vh;
-
 }
 
 /* =========================
@@ -211,7 +198,6 @@ SIDEBAR
 ========================= */
 
 .sidebar{
-
 padding:24px;
 
 border-right:1px solid rgba(255,255,255,.08);
@@ -221,7 +207,6 @@ background:rgba(255,255,255,.03);
 backdrop-filter:blur(30px);
 
 overflow-y:auto;
-
 }
 
 .sidebar::-webkit-scrollbar{
@@ -229,7 +214,6 @@ width:0;
 }
 
 .card{
-
 background:rgba(255,255,255,.06);
 
 border:1px solid rgba(255,255,255,.08);
@@ -244,7 +228,6 @@ backdrop-filter:blur(20px);
 
 box-shadow:
 0 10px 40px rgba(0,0,0,.12);
-
 }
 
 .card h3{
@@ -274,9 +257,7 @@ color:var(--muted);
 }
 
 input,
-textarea,
-select{
-
+textarea{
 width:100%;
 
 border:none;
@@ -297,7 +278,6 @@ font-family:inherit;
 border:1px solid transparent;
 
 transition:.3s;
-
 }
 
 textarea{
@@ -306,15 +286,12 @@ resize:none;
 }
 
 input:focus,
-textarea:focus,
-select:focus{
-
+textarea:focus{
 border-color:#06b6d4;
 background:rgba(255,255,255,.09);
 
 box-shadow:
 0 0 0 4px rgba(6,182,212,.08);
-
 }
 
 input::placeholder,
@@ -331,7 +308,6 @@ font-family:inherit;
 }
 
 .primary{
-
 width:100%;
 
 padding:16px;
@@ -357,15 +333,12 @@ box-shadow:
 0 14px 40px rgba(124,58,237,.32);
 
 transition:.35s;
-
 }
 
 .primary:hover{
-
 transform:
 translateY(-5px)
 scale(1.01);
-
 }
 
 /* =========================
@@ -373,7 +346,6 @@ UPLOAD
 ========================= */
 
 .upload{
-
 display:block;
 
 padding:28px;
@@ -389,15 +361,11 @@ border:2px dashed rgba(255,255,255,.12);
 transition:.3s;
 
 background:rgba(255,255,255,.02);
-
 }
 
 .upload:hover{
-
 border-color:#06b6d4;
-
 background:rgba(255,255,255,.04);
-
 }
 
 /* =========================
@@ -412,7 +380,6 @@ gap:20px;
 }
 
 .ats-score{
-
 font-size:54px;
 font-weight:900;
 
@@ -425,7 +392,6 @@ linear-gradient(
 
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
-
 }
 
 .ats-text{
@@ -435,32 +401,17 @@ line-height:1.6;
 }
 
 /* =========================
-SEARCH
-========================= */
-
-.template-search{
-margin-bottom:18px;
-}
-
-/* =========================
-MARKETPLACE
+TEMPLATE
 ========================= */
 
 .template-marketplace{
-
 display:grid;
-
-grid-template-columns:
-repeat(auto-fill,minmax(210px,1fr));
-
+grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
 gap:20px;
-
 }
 
 .template-card{
-
 position:relative;
-
 overflow:hidden;
 
 border-radius:30px;
@@ -479,11 +430,9 @@ border:1px solid rgba(255,255,255,.08);
 transition:.45s;
 
 backdrop-filter:blur(30px);
-
 }
 
 .template-card:hover{
-
 transform:
 translateY(-10px)
 scale(1.02);
@@ -492,7 +441,6 @@ border-color:#8b5cf6;
 
 box-shadow:
 0 24px 60px rgba(124,58,237,.28);
-
 }
 
 .template-card.active{
@@ -500,15 +448,10 @@ border:2px solid #06b6d4;
 }
 
 .template-thumb{
-
 height:240px;
-
 background:white;
-
 overflow:hidden;
-
 position:relative;
-
 }
 
 .template-info{
@@ -530,7 +473,6 @@ opacity:.7;
 }
 
 .badge{
-
 position:absolute;
 top:12px;
 left:12px;
@@ -550,143 +492,6 @@ linear-gradient(
 #7c3aed,
 #ec4899
 );
-
-}
-
-.favorite-btn{
-
-position:absolute;
-top:12px;
-right:12px;
-
-width:40px;
-height:40px;
-
-border-radius:50%;
-
-background:rgba(0,0,0,.4);
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-backdrop-filter:blur(20px);
-
-z-index:5;
-
-font-size:18px;
-
-}
-
-.favorite-btn.active{
-background:#ec4899;
-}
-
-/* =========================
-MINI TEMPLATES
-========================= */
-
-.mini-modern{
-height:100%;
-padding:14px;
-display:flex;
-gap:12px;
-background:white;
-}
-
-.mini-modern-left{
-width:32%;
-border-radius:16px;
-
-background:
-linear-gradient(
-180deg,
-#7c3aed,
-#4f46e5
-);
-
-}
-
-.mini-modern-right{
-flex:1;
-}
-
-.line-dark{
-height:16px;
-border-radius:999px;
-background:#111827;
-margin-bottom:12px;
-}
-
-.line{
-height:8px;
-border-radius:999px;
-background:#d1d5db;
-margin-bottom:8px;
-}
-
-.block{
-height:90px;
-border-radius:18px;
-background:#f3f4f6;
-margin-top:18px;
-}
-
-/* MINIMAL */
-
-.mini-minimal{
-height:100%;
-padding:22px;
-background:white;
-}
-
-.mini-head{
-height:50px;
-border-radius:18px;
-background:#111827;
-margin-bottom:16px;
-}
-
-.mini-box{
-height:80px;
-border-radius:20px;
-background:#f3f4f6;
-margin-top:16px;
-}
-
-/* CREATIVE */
-
-.mini-creative{
-height:100%;
-background:
-linear-gradient(
-135deg,
-#111827,
-#1e293b
-);
-
-padding:20px;
-}
-
-.creative-circle{
-width:90px;
-height:90px;
-border-radius:50%;
-background:
-linear-gradient(
-135deg,
-#7c3aed,
-#06b6d4
-);
-
-margin-bottom:20px;
-}
-
-.creative-line{
-height:10px;
-background:rgba(255,255,255,.2);
-border-radius:999px;
-margin-bottom:10px;
 }
 
 /* =========================
@@ -694,7 +499,6 @@ PREVIEW
 ========================= */
 
 .preview{
-
 padding:40px;
 
 display:flex;
@@ -702,53 +506,12 @@ flex-direction:column;
 align-items:center;
 
 overflow:auto;
+width:100%;
 
 gap:20px;
-
 }
-
-/* =========================
-ZOOM
-========================= */
-
-.zoom-controls{
-display:flex;
-gap:12px;
-}
-
-.zoom-controls button{
-
-width:52px;
-height:52px;
-
-border:none;
-
-border-radius:18px;
-
-background:rgba(255,255,255,.08);
-
-color:white;
-
-font-size:18px;
-font-weight:900;
-
-cursor:pointer;
-
-transition:.3s;
-
-}
-
-.zoom-controls button:hover{
-transform:translateY(-3px);
-background:rgba(255,255,255,.12);
-}
-
-/* =========================
-CV
-========================= */
 
 .cv{
-
 width:210mm;
 min-height:297mm;
 
@@ -766,39 +529,41 @@ transform-origin:top center;
 
 transition:.3s;
 
+flex-shrink:0;
 }
 
 /* =========================
-TEMPLATE MODERN
+ZOOM
 ========================= */
 
-.cv.modern{
-display:grid;
-grid-template-columns:320px 1fr;
+.zoom-controls{
+display:flex;
+gap:12px;
 }
 
-.cv-sidebar{
+.zoom-controls button{
+width:52px;
+height:52px;
 
-padding:50px 30px;
+border:none;
+
+border-radius:18px;
+
+background:rgba(255,255,255,.08);
 
 color:white;
 
-background:
-linear-gradient(
-180deg,
-#7c3aed,
-#4f46e5
-);
+font-size:18px;
+font-weight:900;
 
+cursor:pointer;
 }
 
-.cv-main{
-padding:50px;
-background:white;
-}
+/* =========================
+CV TEMPLATE
+========================= */
 
 .avatar{
-
 width:120px;
 height:120px;
 
@@ -811,7 +576,6 @@ margin-bottom:24px;
 background:#ddd;
 
 border:4px solid rgba(255,255,255,.18);
-
 }
 
 .cv-name{
@@ -832,7 +596,6 @@ margin-bottom:34px;
 }
 
 .cv-title{
-
 font-size:13px;
 font-weight:800;
 
@@ -841,11 +604,9 @@ letter-spacing:2px;
 margin-bottom:14px;
 
 opacity:.7;
-
 }
 
 .cv-card{
-
 background:rgba(255,255,255,.1);
 
 padding:16px;
@@ -855,11 +616,12 @@ border-radius:18px;
 margin-bottom:12px;
 
 word-break:break-word;
-
 }
 
 .section{
 margin-bottom:34px;
+page-break-inside:avoid;
+break-inside:avoid;
 }
 
 .section-title{
@@ -880,7 +642,6 @@ gap:10px;
 }
 
 .tag{
-
 padding:10px 14px;
 
 border-radius:999px;
@@ -891,565 +652,11 @@ color:#111827;
 
 font-size:12px;
 font-weight:700;
-
 }
 
 /* =========================
-MINIMAL TEMPLATE
+MODERN
 ========================= */
-
-.cv.minimal{
-padding:60px;
-}
-
-.cv.minimal .cv-name{
-font-size:54px;
-color:#111827;
-}
-
-.cv.minimal .cv-role{
-color:#6b7280;
-}
-
-.cv.minimal .skills .tag{
-background:#111827;
-color:white;
-}
-
-/* =========================
-CREATIVE TEMPLATE
-========================= */
-
-.cv.creative{
-
-background:
-linear-gradient(
-135deg,
-#111827,
-#1e293b
-);
-
-color:white;
-
-padding:60px;
-
-}
-
-.cv.creative .section-title{
-color:#8be9fd;
-}
-
-.cv.creative .tag{
-background:#7c3aed;
-color:white;
-}
-
-.cv.creative .section p{
-color:rgba(255,255,255,.8);
-}
-
-/* =========================
-ISLAND
-========================= */
-
-.island{
-
-position:fixed;
-
-top:20px;
-left:50%;
-
-transform:translateX(-50%);
-
-background:rgba(0,0,0,.75);
-
-padding:14px 24px;
-
-border-radius:999px;
-
-display:flex;
-align-items:center;
-gap:14px;
-
-backdrop-filter:blur(20px);
-
-border:1px solid rgba(255,255,255,.08);
-
-z-index:9999;
-
-opacity:0;
-pointer-events:none;
-
-transition:.4s;
-
-}
-
-.island.show{
-opacity:1;
-top:30px;
-}
-
-.loader{
-
-width:18px;
-height:18px;
-
-border-radius:50%;
-
-border:2px solid rgba(255,255,255,.2);
-border-top:2px solid white;
-
-animation:spin 1s linear infinite;
-
-}
-
-@keyframes spin{
-to{
-transform:rotate(360deg);
-}
-}
-
-.progress-wrap{
-
-width:120px;
-height:6px;
-
-border-radius:999px;
-
-background:rgba(255,255,255,.08);
-
-overflow:hidden;
-
-}
-
-.progress-bar{
-
-width:0%;
-height:100%;
-
-background:
-linear-gradient(
-90deg,
-#06b6d4,
-#7c3aed
-);
-
-transition:.3s;
-
-}
-
-/* =========================
-MOBILE
-========================= */
-
-@media(max-width:1000px){
-
-.container{
-grid-template-columns:1fr;
-}
-
-.sidebar{
-border-right:none;
-border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.preview{
-padding:20px;
-justify-content:flex-start;
-}
-
-.cv{
-
-width:794px;
-min-height:1123px;
-
-transform-origin:top left;
-
-}
-
-.preview .cv{
-transition:transform .3s ease;
-}
-
-.section{
-page-break-inside:avoid;
-}
-
-.cv{
--webkit-font-smoothing:antialiased;
-text-rendering:optimizeLegibility;
-}
-
-.cv.modern{
-grid-template-columns:1fr;
-}
-
-.input-grid{
-grid-template-columns:1fr;
-}
-
-.topbar{
-padding:16px;
-}
-
-.logo{
-font-size:22px;
-}
-
-.live-badge{
-display:none;
-}
-
-}
-
-/* =========================
-LUXE TEMPLATE
-========================= */
-
-.cv.luxe{
-
-display:grid;
-
-grid-template-columns:260px 1fr;
-
-background:#faf7f2;
-
-}
-
-.cv.luxe .cv-sidebar{
-
-background:#111827;
-
-color:white;
-
-padding:60px 30px;
-
-}
-
-.cv.luxe .cv-main{
-
-background:#faf7f2;
-
-padding:60px;
-
-}
-
-.cv.luxe .section-title{
-
-font-size:26px;
-
-color:#111827;
-
-border-bottom:2px solid #111827;
-
-padding-bottom:10px;
-
-margin-bottom:20px;
-
-}
-
-.cv.luxe .tag{
-
-background:#111827;
-color:white;
-
-}
-
-.cv.luxe .cv-name{
-
-font-size:48px;
-
-color:white;
-
-}
-
-.cv.luxe .cv-role{
-
-color:#d1d5db;
-
-}
-
-/* =========================
-TOKYO TEMPLATE
-========================= */
-
-.cv.tokyo{
-display:grid;
-grid-template-columns:220px 1fr;
-background:#ffffff;
-}
-
-.cv.tokyo .cv-sidebar{
-background:#0f172a;
-padding:50px 24px;
-color:white;
-}
-
-.cv.tokyo .cv-main{
-padding:55px;
-background:white;
-}
-
-.cv.tokyo .section-title{
-font-size:18px;
-text-transform:uppercase;
-letter-spacing:2px;
-color:#7c3aed;
-margin-bottom:18px;
-}
-
-.cv.tokyo .tag{
-background:#ede9fe;
-color:#6d28d9;
-}
-
-/* =========================
-GLASS TEMPLATE
-========================= */
-
-.cv.glass{
-background:
-linear-gradient(
-135deg,
-rgba(255,255,255,.7),
-rgba(255,255,255,.4)
-);
-
-backdrop-filter:blur(30px);
-
-padding:60px;
-}
-
-.cv.glass .section-title{
-color:#06b6d4;
-}
-
-.cv.glass .tag{
-background:#111827;
-color:white;
-}
-
-/* =========================
-EDITORIAL TEMPLATE
-========================= */
-
-.cv.editorial{
-padding:70px;
-background:#fff;
-}
-
-.cv.editorial .cv-name{
-font-size:68px;
-line-height:0.9;
-max-width:500px;
-}
-
-.cv.editorial .cv-role{
-font-size:20px;
-color:#6b7280;
-margin-bottom:50px;
-}
-
-.cv.editorial .section-title{
-font-size:14px;
-letter-spacing:3px;
-text-transform:uppercase;
-color:#111827;
-border-bottom:1px solid #ddd;
-padding-bottom:10px;
-}
-
-.cv.editorial .tag{
-background:#f3f4f6;
-}
-
-/* =========================
-NEON TEMPLATE
-========================= */
-
-.cv.neon{
-background:#050816;
-padding:60px;
-color:white;
-}
-
-.cv.neon .cv-name{
-background:linear-gradient(135deg,#06b6d4,#7c3aed);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-.cv.neon .section-title{
-color:#06b6d4;
-}
-
-.cv.neon .tag{
-background:#111827;
-border:1px solid #06b6d4;
-color:#06b6d4;
-}
-
-.cv.minimal .cv-main,
-.cv.glass .cv-main,
-.cv.editorial .cv-main,
-.cv.neon .cv-main,
-.cv.creative .cv-main{
-width:100%;
-}
-
-.cv.glass{
--webkit-backdrop-filter:blur(30px);
-}
-
-.favorite-btn{
-user-select:none;
-}
-
-.template-card{
-min-width:0;
-}
-
-.template-name{
-overflow:hidden;
-text-overflow:ellipsis;
-white-space:nowrap;
-}
-
-.template-thumb{
-aspect-ratio:4/5;
-height:auto;
-}
-
-.card .primary{
-margin-bottom:12px;
-}
-
-.cv{
-
-position:relative;
-
-}
-
-.cv::before{
-
-content:'';
-
-position:absolute;
-inset:0;
-
-pointer-events:none;
-
-background:
-linear-gradient(
-180deg,
-rgba(255,255,255,.06),
-transparent 30%
-);
-
-}
-
-.cv.apple{
-background:#fff;
-padding:70px;
-font-family:Inter,sans-serif;
-}
-
-.apple-header{
-margin-bottom:50px;
-}
-
-.apple-name{
-font-size:62px;
-font-weight:900;
-letter-spacing:-3px;
-color:#111;
-}
-
-.apple-job{
-font-size:24px;
-color:#666;
-margin-top:10px;
-}
-
-.apple-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:40px;
-}
-
-.apple-box{
-padding:30px;
-border-radius:30px;
-background:#f5f5f7;
-}
-
-.apple-box h3{
-margin-bottom:18px;
-font-size:14px;
-letter-spacing:2px;
-}
-
-.cv.spotify{
-background:#121212;
-padding:60px;
-color:white;
-}
-
-.cv.spotify .cv-name{
-font-size:60px;
-color:#1DB954;
-}
-
-.cv.spotify .tag{
-background:#1DB954;
-color:black;
-}
-
-.cv.notion{
-background:white;
-padding:70px;
-color:#111;
-font-family:Inter,sans-serif;
-}
-
-.cv.notion .section-title{
-font-size:16px;
-border-bottom:1px solid #ddd;
-padding-bottom:10px;
-margin-bottom:20px;
-}
-
-.cv.notion .tag{
-background:#f3f4f6;
-}
-
-.cv *{
--webkit-print-color-adjust:exact !important;
-print-color-adjust:exact !important;
-}
-
-.section{
-page-break-inside:avoid;
-break-inside:avoid;
-}
-
-.cv{
-animation:fadeScale .5s ease;
-}
-
-@keyframes fadeScale{
-
-from{
-opacity:0;
-transform:scale(.96);
-}
-
-to{
-opacity:1;
-transform:scale(1);
-}
-
-}
 
 .modern-layout{
 display:grid;
@@ -1467,6 +674,10 @@ color:white;
 padding:50px;
 background:white;
 }
+
+/* =========================
+MINIMAL
+========================= */
 
 .minimal-layout{
 padding:70px;
@@ -1507,184 +718,141 @@ letter-spacing:2px;
 margin-bottom:14px;
 }
 
-.editorial-layout{
-display:grid;
-grid-template-columns:320px 1fr;
-min-height:297mm;
-}
+/* =========================
+ISLAND
+========================= */
 
-.editorial-left{
-padding:60px 40px;
-background:#faf7f2;
-}
+.island{
+position:fixed;
 
-.editorial-right{
-padding:70px;
-}
+top:20px;
+left:50%;
 
-.editorial-name{
-font-size:70px;
-font-weight:900;
-line-height:.9;
-}
+transform:translateX(-50%);
 
-.editorial-role{
-margin-top:20px;
-font-size:20px;
-color:#666;
-}
+background:rgba(0,0,0,.75);
 
-.editorial-avatar{
-width:100%;
-border-radius:30px;
-margin-top:40px;
-}
+padding:14px 24px;
 
-.editorial-block{
-margin-bottom:45px;
-}
+border-radius:999px;
 
-.editorial-block h4{
-font-size:13px;
-letter-spacing:3px;
-margin-bottom:15px;
-}
-
-.apple-layout{
-padding:70px;
-background:white;
-}
-
-.apple-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:50px;
-}
-
-.apple-avatar{
-width:130px;
-height:130px;
-border-radius:40px;
-object-fit:cover;
-}
-
-.apple-name{
-font-size:70px;
-font-weight:900;
-letter-spacing:-4px;
-}
-
-.apple-job{
-font-size:24px;
-color:#666;
-margin-top:10px;
-}
-
-.apple-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:30px;
-}
-
-.apple-box{
-padding:35px;
-background:#f5f5f7;
-border-radius:35px;
-}
-
-.apple-box h3{
-font-size:13px;
-letter-spacing:3px;
-margin-bottom:18px;
-}
-
-.apple-skills{
-margin-top:30px;
-display:flex;
-flex-wrap:wrap;
-gap:12px;
-}
-
-.spotify-layout{
-padding:60px;
-background:#121212;
-color:white;
-min-height:297mm;
-}
-
-.spotify-top{
 display:flex;
 align-items:center;
-gap:30px;
-margin-bottom:50px;
+gap:14px;
+
+backdrop-filter:blur(20px);
+
+border:1px solid rgba(255,255,255,.08);
+
+z-index:9999;
+
+opacity:0;
+pointer-events:none;
+
+transition:.4s;
 }
 
-.spotify-avatar{
-width:120px;
-height:120px;
+.island.show{
+opacity:1;
+top:30px;
+}
+
+.loader{
+width:18px;
+height:18px;
+
 border-radius:50%;
-object-fit:cover;
+
+border:2px solid rgba(255,255,255,.2);
+border-top:2px solid white;
+
+animation:spin 1s linear infinite;
 }
 
-.spotify-name{
-font-size:64px;
-font-weight:900;
-color:#1DB954;
+@keyframes spin{
+to{
+transform:rotate(360deg);
+}
 }
 
-.spotify-role{
+.progress-wrap{
+width:120px;
+height:6px;
+
+border-radius:999px;
+
+background:rgba(255,255,255,.08);
+
+overflow:hidden;
+}
+
+.progress-bar{
+width:0%;
+height:100%;
+
+background:
+linear-gradient(
+90deg,
+#06b6d4,
+#7c3aed
+);
+
+transition:.3s;
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media(max-width:1000px){
+
+.container{
+grid-template-columns:1fr;
+}
+
+.sidebar{
+border-right:none;
+border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.preview{
+align-items:flex-start;
+overflow:auto;
+padding:20px;
+}
+
+.cv{
+margin-left:20px;
+width:794px;
+min-height:1123px;
+}
+
+.input-grid{
+grid-template-columns:1fr;
+}
+
+.topbar{
+padding:16px;
+}
+
+.logo{
 font-size:22px;
-opacity:.7;
 }
 
-.spotify-section{
-margin-bottom:45px;
+.live-badge{
+display:none;
 }
 
-.spotify-section h3{
-color:#1DB954;
-margin-bottom:14px;
+.modern-layout{
+grid-template-columns:1fr;
 }
 
-.spotify-layout .tag{
-background:#1DB954;
-color:black;
-}
-
-.notion-layout{
-padding:70px;
-background:white;
-color:#111;
-}
-
-.notion-header{
-margin-bottom:50px;
-}
-
-.notion-name{
-font-size:58px;
-font-weight:900;
-}
-
-.notion-role{
-font-size:22px;
-color:#666;
-margin-top:10px;
-}
-
-.notion-section{
-margin-bottom:45px;
 }
 
 </style>
 </head>
 
 <body>
-
-<!-- =========================
-TOPBAR
-========================= -->
 
 <div class="topbar">
 
@@ -1714,10 +882,6 @@ TREND TEMPLATE 2026
 
 </div>
 
-<!-- =========================
-ISLAND
-========================= -->
-
 <div class="island" id="island">
 
 <div class="loader"></div>
@@ -1734,13 +898,9 @@ Generating...
 
 <div class="container">
 
-<!-- =========================
-SIDEBAR
-========================= -->
+<!-- SIDEBAR -->
 
 <div class="sidebar">
-
-<!-- FORM -->
 
 <div class="card">
 
@@ -1805,8 +965,6 @@ SIDEBAR
 
 </div>
 
-<!-- PHOTO -->
-
 <div class="card">
 
 <h3>Profile Photo</h3>
@@ -1826,8 +984,6 @@ id="photoInput"
 
 </div>
 
-<!-- ATS -->
-
 <div class="card">
 
 <h3>ATS Score</h3>
@@ -1846,413 +1002,6 @@ Semakin lengkap data CV maka ATS score akan meningkat.
 
 </div>
 
-<!-- TEMPLATE -->
-
-<div class="card">
-
-<h3>Canva Style Marketplace</h3>
-
-<div class="template-search">
-
-<input
-type="text"
-placeholder="Search template..."
-id="templateSearch"
-/>
-
-</div>
-
-<div class="template-marketplace">
-
-<!-- TEMPLATE 1 -->
-
-<div
-class="template-card active"
-data-template="modern"
-onclick="changeTemplate('modern',this)"
->
-
-<div class="badge">
-TREND
-</div>
-
-<div class="favorite-btn">
-♡
-</div>
-
-<div class="template-thumb">
-
-<div class="mini-modern">
-
-<div class="mini-modern-left"></div>
-
-<div class="mini-modern-right">
-
-<div class="line-dark"></div>
-
-<div class="line"></div>
-
-<div class="line" style="width:70%"></div>
-
-<div class="block"></div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="template-info">
-
-<div class="template-name">
-Neo Purple Resume
-</div>
-
-<div class="template-meta">
-
-<span>Modern</span>
-<span>ATS</span>
-<span>2026</span>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- TEMPLATE 2 -->
-
-<div
-class="template-card"
-data-template="minimal"
-onclick="changeTemplate('minimal',this)"
->
-
-<div class="badge">
-NEW
-</div>
-
-<div class="favorite-btn">
-♡
-</div>
-
-<div class="template-thumb">
-
-<div class="mini-minimal">
-
-<div class="mini-head"></div>
-
-<div class="line"></div>
-
-<div class="line" style="width:70%"></div>
-
-<div class="mini-box"></div>
-
-<div class="mini-box"></div>
-
-</div>
-
-</div>
-
-<div class="template-info">
-
-<div class="template-name">
-Minimal ATS White
-</div>
-
-<div class="template-meta">
-
-<span>Minimal</span>
-<span>Clean</span>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- TEMPLATE 3 -->
-
-<div
-class="template-card"
-data-template="creative"
-onclick="changeTemplate('creative',this)"
->
-
-<div class="badge">
-HOT
-</div>
-
-<div class="favorite-btn">
-♡
-</div>
-
-<div class="template-thumb">
-
-<div class="mini-creative">
-
-<div class="creative-circle"></div>
-
-<div class="creative-line"></div>
-
-<div class="creative-line"></div>
-
-<div class="creative-line" style="width:70%"></div>
-
-</div>
-
-</div>
-
-<div class="template-info">
-
-<div class="template-name">
-Creative Dark Pro
-</div>
-
-<div class="template-meta">
-
-<span>Creative</span>
-<span>Portfolio</span>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- TEMPLATE 4 -->
-
-<div
-class="template-card"
-data-template="luxe"
-onclick="changeTemplate('luxe',this)"
->
-
-<div class="badge">
-PREMIUM
-</div>
-
-<div class="favorite-btn">
-♡
-</div>
-
-<div class="template-thumb">
-
-<div class="mini-modern">
-
-<div style="
-width:30%;
-background:#111827;
-border-radius:20px;
-"></div>
-
-<div class="mini-modern-right">
-
-<div class="line-dark"></div>
-
-<div class="line"></div>
-
-<div class="line" style="width:60%"></div>
-
-<div class="block"></div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="template-info">
-
-<div class="template-name">
-Luxe Corporate
-</div>
-
-<div class="template-meta">
-
-<span>Canva</span>
-<span>Premium</span>
-
-</div>
-</div>
-</div>
-
-<!-- TOKYO -->
-
-<div
-class="template-card"
-data-template="tokyo"
-onclick="changeTemplate('tokyo',this)"
->
-
-<div class="badge">NEW</div>
-
-<div class="template-thumb">
-
-<div class="mini-modern">
-
-<div style="
-width:30%;
-background:#0f172a;
-border-radius:20px;
-"></div>
-
-<div class="mini-modern-right">
-
-<div class="line-dark"></div>
-<div class="line"></div>
-<div class="line" style="width:60%"></div>
-<div class="block"></div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="template-info">
-
-<div class="template-name">
-Tokyo Corporate
-</div>
-
-<div class="template-meta">
-
-<span>Japan</span>
-<span>ATS</span>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- GLASS -->
-
-<div
-class="template-card"
-data-template="glass"
-onclick="changeTemplate('glass',this)"
->
-
-<div class="badge">GLASS</div>
-
-<div class="template-thumb">
-
-<div class="mini-creative">
-
-<div class="creative-circle"></div>
-
-<div class="creative-line"></div>
-<div class="creative-line"></div>
-
-</div>
-
-</div>
-
-<div class="template-info">
-
-<div class="template-name">
-Glass Morphism
-</div>
-
-<div class="template-meta">
-
-<span>UI</span>
-<span>Canva</span>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- EDITORIAL -->
-
-<div
-class="template-card"
-data-template="editorial"
-onclick="changeTemplate('editorial',this)"
->
-
-<div class="badge">MAGAZINE</div>
-
-<div class="template-thumb">
-
-<div class="mini-minimal">
-
-<div class="mini-head"></div>
-
-<div class="mini-box"></div>
-
-</div>
-
-</div>
-
-<div class="template-info">
-
-<div class="template-name">
-Editorial Vogue
-</div>
-
-<div class="template-meta">
-
-<span>Luxury</span>
-<span>Fashion</span>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- NEON -->
-
-<div
-class="template-card"
-data-template="neon"
-onclick="changeTemplate('neon',this)"
->
-
-<div class="badge">TREND</div>
-
-<div class="template-thumb">
-
-<div class="mini-creative">
-
-<div class="creative-circle"></div>
-
-<div class="creative-line"></div>
-
-</div>
-
-</div>
-
-<div class="template-info">
-
-<div class="template-name">
-Neon Cyber
-</div>
-
-<div class="template-meta">
-
-<span>Dark</span>
-<span>Tech</span>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- EXPORT -->
-
 <div class="card">
 
 <h3>Export CV</h3>
@@ -2267,6 +1016,8 @@ Download PDF
 Download JPG
 </button>
 
+<br><br>
+
 <button class="primary" onclick="downloadPNG()">
 Download PNG
 </button>
@@ -2275,9 +1026,7 @@ Download PNG
 
 </div>
 
-<!-- =========================
-PREVIEW
-========================= -->
+<!-- PREVIEW -->
 
 <div class="preview">
 
@@ -2289,110 +1038,7 @@ PREVIEW
 
 </div>
 
-<!-- CV -->
-
-<div class="cv modern" id="cv">
-
-<img
-crossorigin="anonymous"
-src="https://i.ibb.co/4pDNDk1/avatar.png"
-class="avatar"
-id="avatar"
-/>
-
-<div class="cv-name" id="previewName">
-Nama Kamu
-</div>
-
-<div class="cv-role" id="previewJob">
-Frontend Developer
-</div>
-
-<div class="cv-section">
-
-<div class="cv-title">
-CONTACT
-</div>
-
-<div class="cv-card" id="previewEmail">
-email@gmail.com
-</div>
-
-<div class="cv-card" id="previewPhone">
-+62
-</div>
-
-<div class="cv-card" id="previewLocation">
-Indonesia
-</div>
-
-</div>
-
-<div class="cv-section">
-
-<div class="cv-title">
-SKILLS
-</div>
-
-<div class="skills" id="previewSkills">
-
-<div class="tag">
-HTML
-</div>
-
-<div class="tag">
-CSS
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- MAIN -->
-
 <div class="cv modern" id="cv"></div>
-
-<div class="section">
-
-<div class="section-title">
-About Me
-</div>
-
-<p id="previewSummary">
-Creative frontend developer with strong passion in building premium digital experiences.
-</p>
-
-</div>
-
-<div class="section">
-
-<div class="section-title">
-Experience
-</div>
-
-<p id="previewExperience">
-Frontend Developer at DTScriptID
-</p>
-
-</div>
-
-<div class="section">
-
-<div class="section-title">
-Education
-</div>
-
-<p id="previewEducation">
-Bachelor Degree
-</p>
-
-</div>
-
-</div>
-
-</div>
 
 </div>
 
@@ -2400,36 +1046,15 @@ Bachelor Degree
 
 <script>
 
-/* =========================
-ELEMENT SAFE
-========================= */
-
 const $ = (id)=>document.getElementById(id)
 
 const cv = $('cv')
-const cvSidebar = $('cvSidebar')
-const cvMain = $('cvMain')
-const avatar = $('avatar')
 
 const island = $('island')
 const islandText = $('islandText')
 const progressBar = $('progressBar')
 
 const atsScore = $('atsScore')
-
-const previewName = $('previewName')
-const previewJob = $('previewJob')
-const previewEmail = $('previewEmail')
-const previewPhone = $('previewPhone')
-const previewLocation = $('previewLocation')
-const previewSummary = $('previewSummary')
-const previewExperience = $('previewExperience')
-const previewEducation = $('previewEducation')
-const previewSkills = $('previewSkills')
-
-/* =========================
-FIELDS
-========================= */
 
 const fields = [
 'name',
@@ -2442,10 +1067,6 @@ const fields = [
 'education',
 'skills'
 ]
-
-/* =========================
-DEFAULT DATA
-========================= */
 
 const defaults = {
 
@@ -2478,31 +1099,9 @@ skills:
 
 }
 
-/* =========================
-GET VALUE
-========================= */
-
 function getValue(id){
-
 return $(id)?.value?.trim() || ''
-
 }
-
-/* =========================
-ESCAPE HTML
-========================= */
-
-function escapeHTML(text){
-
-return text
-.replace(/</g,'&lt;')
-.replace(/>/g,'&gt;')
-
-}
-
-/* =========================
-UPDATE CV
-========================= */
 
 function updateCV(){
 renderTemplate(currentTemplate)
@@ -2514,35 +1113,26 @@ function renderTemplate(type){
 
 const data = {
 
-name:
-getValue('name') || defaults.name,
+name:getValue('name') || defaults.name,
 
-job:
-getValue('job') || defaults.job,
+job:getValue('job') || defaults.job,
 
-email:
-getValue('email') || defaults.email,
+email:getValue('email') || defaults.email,
 
-phone:
-getValue('phone') || defaults.phone,
+phone:getValue('phone') || defaults.phone,
 
-location:
-getValue('location') || defaults.location,
+location:getValue('location') || defaults.location,
 
-summary:
-(getValue('summary') || defaults.summary)
+summary:(getValue('summary') || defaults.summary)
 .replace(/\n/g,'<br>'),
 
-experience:
-(getValue('experience') || defaults.experience)
+experience:(getValue('experience') || defaults.experience)
 .replace(/\n/g,'<br>'),
 
-education:
-(getValue('education') || defaults.education)
+education:(getValue('education') || defaults.education)
 .replace(/\n/g,'<br>'),
 
-skills:
-(getValue('skills') || defaults.skills)
+skills:(getValue('skills') || defaults.skills)
 .split(',')
 .map(skill=>`<span class="tag">${skill.trim()}</span>`)
 .join(''),
@@ -2552,10 +1142,6 @@ localStorage.getItem('dtscript_avatar')
 || 'https://i.ibb.co/4pDNDk1/avatar.png'
 
 }
-
-/* =========================
-MODERN
-========================= */
 
 const modernTemplate = `
 
@@ -2645,439 +1231,14 @@ Education
 
 `
 
-/* =========================
-MINIMAL
-========================= */
-
-const minimalTemplate = `
-
-<div class="minimal-layout">
-
-<div class="minimal-header">
-
-<h1>
-${data.name}
-</h1>
-
-<h2>
-${data.job}
-</h2>
-
-<div class="minimal-contact">
-
-<span>${data.email}</span>
-
-<span>${data.phone}</span>
-
-<span>${data.location}</span>
-
-</div>
-
-</div>
-
-<div class="minimal-section">
-
-<h3>
-About
-</h3>
-
-<p>
-${data.summary}
-</p>
-
-</div>
-
-<div class="minimal-section">
-
-<h3>
-Experience
-</h3>
-
-<p>
-${data.experience}
-</p>
-
-</div>
-
-<div class="minimal-section">
-
-<h3>
-Education
-</h3>
-
-<p>
-${data.education}
-</p>
-
-</div>
-
-<div class="minimal-section">
-
-<h3>
-Skills
-</h3>
-
-<div class="skills">
-${data.skills}
-</div>
-
-</div>
-
-</div>
-
-`
-
-/* =========================
-EDITORIAL
-========================= */
-
-const editorialTemplate = `
-
-<div class="editorial-layout">
-
-<div class="editorial-left">
-
-<div class="editorial-name">
-${data.name}
-</div>
-
-<div class="editorial-role">
-${data.job}
-</div>
-
-<img src="${data.avatar}" class="editorial-avatar">
-
-</div>
-
-<div class="editorial-right">
-
-<div class="editorial-block">
-
-<h4>
-ABOUT
-</h4>
-
-<p>
-${data.summary}
-</p>
-
-</div>
-
-<div class="editorial-block">
-
-<h4>
-EXPERIENCE
-</h4>
-
-<p>
-${data.experience}
-</p>
-
-</div>
-
-<div class="editorial-block">
-
-<h4>
-EDUCATION
-</h4>
-
-<p>
-${data.education}
-</p>
-
-</div>
-
-<div class="editorial-block">
-
-<h4>
-SKILLS
-</h4>
-
-<div class="skills">
-${data.skills}
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-`
-
-/* =========================
-APPLE
-========================= */
-
-const appleTemplate = `
-
-<div class="apple-layout">
-
-<div class="apple-header">
-
-<div>
-
-<div class="apple-name">
-${data.name}
-</div>
-
-<div class="apple-job">
-${data.job}
-</div>
-
-</div>
-
-<img src="${data.avatar}" class="apple-avatar">
-
-</div>
-
-<div class="apple-grid">
-
-<div class="apple-box">
-
-<h3>
-ABOUT
-</h3>
-
-<p>
-${data.summary}
-</p>
-
-</div>
-
-<div class="apple-box">
-
-<h3>
-CONTACT
-</h3>
-
-<p>
-${data.email}
-<br><br>
-${data.phone}
-<br><br>
-${data.location}
-</p>
-
-</div>
-
-<div class="apple-box">
-
-<h3>
-EXPERIENCE
-</h3>
-
-<p>
-${data.experience}
-</p>
-
-</div>
-
-<div class="apple-box">
-
-<h3>
-EDUCATION
-</h3>
-
-<p>
-${data.education}
-</p>
-
-</div>
-
-</div>
-
-<div class="apple-skills">
-
-${data.skills}
-
-</div>
-
-</div>
-
-`
-
-/* =========================
-SPOTIFY
-========================= */
-
-const spotifyTemplate = `
-
-<div class="spotify-layout">
-
-<div class="spotify-top">
-
-<img src="${data.avatar}" class="spotify-avatar">
-
-<div>
-
-<div class="spotify-name">
-${data.name}
-</div>
-
-<div class="spotify-role">
-${data.job}
-</div>
-
-</div>
-
-</div>
-
-<div class="spotify-section">
-
-<h3>
-ABOUT
-</h3>
-
-<p>
-${data.summary}
-</p>
-
-</div>
-
-<div class="spotify-section">
-
-<h3>
-EXPERIENCE
-</h3>
-
-<p>
-${data.experience}
-</p>
-
-</div>
-
-<div class="spotify-section">
-
-<h3>
-EDUCATION
-</h3>
-
-<p>
-${data.education}
-</p>
-
-</div>
-
-<div class="spotify-section">
-
-<h3>
-SKILLS
-</h3>
-
-<div class="skills">
-${data.skills}
-</div>
-
-</div>
-
-</div>
-
-`
-
-/* =========================
-NOTION
-========================= */
-
-const notionTemplate = `
-
-<div class="notion-layout">
-
-<div class="notion-header">
-
-<div class="notion-name">
-${data.name}
-</div>
-
-<div class="notion-role">
-${data.job}
-</div>
-
-</div>
-
-<div class="notion-section">
-
-<div class="section-title">
-About
-</div>
-
-<p>
-${data.summary}
-</p>
-
-</div>
-
-<div class="notion-section">
-
-<div class="section-title">
-Experience
-</div>
-
-<p>
-${data.experience}
-</p>
-
-</div>
-
-<div class="notion-section">
-
-<div class="section-title">
-Education
-</div>
-
-<p>
-${data.education}
-</p>
-
-</div>
-
-<div class="notion-section">
-
-<div class="section-title">
-Skills
-</div>
-
-<div class="skills">
-${data.skills}
-</div>
-
-</div>
-
-</div>
-
-`
-
-/* =========================
-MAP TEMPLATE
-========================= */
-
-const templates = {
-
-modern:modernTemplate,
-minimal:minimalTemplate,
-editorial:editorialTemplate,
-apple:appleTemplate,
-spotify:spotifyTemplate,
-notion:notionTemplate,
-
-creative:modernTemplate,
-glass:modernTemplate,
-luxe:modernTemplate,
-tokyo:modernTemplate,
-neon:modernTemplate
-
-}
-
 cv.className = `cv ${type}`
+cv.innerHTML = modernTemplate
 
-cv.innerHTML =
-templates[type] || modernTemplate
+cv.querySelectorAll('img').forEach(img=>{
+img.crossOrigin = 'anonymous'
+})
 
 }
-
-/* =========================
-ATS SYSTEM
-========================= */
 
 function updateATS(){
 
@@ -3101,10 +1262,6 @@ atsScore.innerText = score + '%'
 
 }
 
-/* =========================
-TEXTAREA AUTO HEIGHT
-========================= */
-
 function autoResize(){
 
 document
@@ -3120,25 +1277,16 @@ textarea.scrollHeight+'px'
 
 }
 
-/* =========================
-LISTENER
-========================= */
-
 fields.forEach(id=>{
 
 $(id).addEventListener('input',()=>{
 
 updateCV()
-
 autoResize()
 
 })
 
 })
-
-/* =========================
-PHOTO SYSTEM
-========================= */
 
 $('photoInput')
 .addEventListener('change',function(e){
@@ -3147,22 +1295,14 @@ const file = e.target.files[0]
 
 if(!file) return
 
-/* VALIDATION */
-
 if(!file.type.startsWith('image/')){
-
 alert('File harus berupa gambar')
 return
-
 }
 
-/* MAX 5MB */
-
 if(file.size > 5 * 1024 * 1024){
-
 alert('Ukuran gambar maksimal 5MB')
 return
-
 }
 
 showIsland('Uploading photo...')
@@ -3172,12 +1312,12 @@ const reader = new FileReader()
 
 reader.onload = function(event){
 
-avatar.src = event.target.result
-
 localStorage.setItem(
 'dtscript_avatar',
 event.target.result
 )
+
+updateCV()
 
 setProgress(100)
 
@@ -3193,74 +1333,6 @@ setProgress(0)
 reader.readAsDataURL(file)
 
 })
-
-/* =========================
-LOAD AVATAR
-========================= */
-
-const savedAvatar =
-localStorage.getItem('dtscript_avatar')
-
-if(savedAvatar){
-
-avatar.src = savedAvatar
-
-}
-
-/* =========================
-SEARCH TEMPLATE
-========================= */
-
-$('templateSearch')
-.addEventListener('input',()=>{
-
-const value =
-$('templateSearch')
-.value
-.toLowerCase()
-
-document
-.querySelectorAll('.template-card')
-.forEach(card=>{
-
-const text =
-card.innerText.toLowerCase()
-
-card.style.display =
-text.includes(value)
-? ''
-: 'none'
-
-})
-
-})
-
-/* =========================
-FAVORITE SYSTEM
-========================= */
-
-document
-.querySelectorAll('.favorite-btn')
-.forEach(btn=>{
-
-btn.addEventListener('click',(e)=>{
-
-e.stopPropagation()
-
-btn.classList.toggle('active')
-
-btn.innerHTML =
-btn.classList.contains('active')
-? '♥'
-: '♡'
-
-})
-
-})
-
-/* =========================
-ISLAND
-========================= */
 
 function showIsland(text){
 
@@ -3286,10 +1358,6 @@ islandText.innerText =
 
 }
 
-/* =========================
-WAIT
-========================= */
-
 function wait(ms){
 
 return new Promise(resolve=>{
@@ -3299,10 +1367,6 @@ setTimeout(resolve,ms)
 })
 
 }
-
-/* =========================
-AUTO SAVE
-========================= */
 
 function saveData(){
 
@@ -3320,10 +1384,6 @@ JSON.stringify(data)
 )
 
 }
-
-/* =========================
-LOAD DATA
-========================= */
 
 function loadData(){
 
@@ -3353,10 +1413,6 @@ console.log(err)
 
 }
 
-/* =========================
-AI GENERATOR
-========================= */
-
 async function generateAI(){
 
 showIsland('Generating AI CV...')
@@ -3384,8 +1440,7 @@ DTScriptID (2024 - Present)
 • Build premium website UI
 • Create responsive landing page
 • Optimize website performance
-• Develop animation interaction
-• Handle frontend system architecture`
+• Develop animation interaction`
 
 }
 
@@ -3404,7 +1459,7 @@ $('education').value =
 if(!getValue('skills')){
 
 $('skills').value =
-'HTML,CSS,JavaScript,UI Design,Figma,Tailwind,GSAP'
+'HTML,CSS,JavaScript,UI Design,Figma,Tailwind'
 
 }
 
@@ -3423,23 +1478,11 @@ setProgress(0)
 
 }
 
-/* =========================
-TEMPLATE SYSTEM
-========================= */
-
 let currentTemplate = 'modern'
 
-function changeTemplate(type, el){
+function changeTemplate(type){
 
 currentTemplate = type
-
-document
-.querySelectorAll('.template-card')
-.forEach(card=>{
-card.classList.remove('active')
-})
-
-el.classList.add('active')
 
 renderTemplate(type)
 
@@ -3447,18 +1490,14 @@ applyZoom()
 
 }
 
-/* =========================
-ZOOM SYSTEM
-========================= */
-
 let zoomLevel = window.innerWidth < 1000 ? 0.55 : 1
 
 function applyZoom(){
 
-if(window.innerWidth < 1000){
-
 cv.style.transform =
 `scale(${zoomLevel})`
+
+if(window.innerWidth < 1000){
 
 cv.style.marginBottom =
 `${(1 - zoomLevel) * -1200}px`
@@ -3467,9 +1506,6 @@ cv.style.marginRight =
 `${(1 - zoomLevel) * -700}px`
 
 }else{
-
-cv.style.transform =
-`scale(${zoomLevel})`
 
 cv.style.marginBottom = '0'
 cv.style.marginRight = '0'
@@ -3500,31 +1536,26 @@ applyZoom()
 
 window.addEventListener('resize',applyZoom)
 
-/* =========================
-EXPORT ENGINE
-========================= */
-
 async function createHighQualityCanvas(){
+
+await document.fonts.ready
 
 const canvas = await html2canvas(cv,{
 
-scale: window.devicePixelRatio > 1 ? 3 : 2,
+scale:3,
 
 useCORS:true,
-
-allowTaint:false,
+allowTaint:true,
 
 backgroundColor:'#ffffff',
 
 logging:false,
 
-imageTimeout:0,
-
 scrollX:0,
 scrollY:0,
 
-windowWidth:cv.offsetWidth,
-windowHeight:cv.offsetHeight
+windowWidth:cv.scrollWidth,
+windowHeight:cv.scrollHeight
 
 })
 
@@ -3544,8 +1575,6 @@ const state = {
 transform: cv.style.transform,
 boxShadow: cv.style.boxShadow,
 borderRadius: cv.style.borderRadius,
-width: cv.style.width,
-height: cv.style.height,
 marginBottom: cv.style.marginBottom,
 marginRight: cv.style.marginRight
 
@@ -3556,9 +1585,6 @@ cv.style.boxShadow = 'none'
 cv.style.borderRadius = '0'
 cv.style.marginBottom = '0'
 cv.style.marginRight = '0'
-
-cv.style.width = '210mm'
-cv.style.minHeight = '297mm'
 
 document.body.style.overflow = 'hidden'
 
@@ -3571,8 +1597,6 @@ function restoreCVExport(state){
 cv.style.transform = state.transform
 cv.style.boxShadow = state.boxShadow
 cv.style.borderRadius = state.borderRadius
-cv.style.width = state.width
-cv.style.height = state.height
 cv.style.marginBottom = state.marginBottom
 cv.style.marginRight = state.marginRight
 
@@ -3581,10 +1605,6 @@ document.body.style.overflow = ''
 applyZoom()
 
 }
-
-/* =========================
-DOWNLOAD PDF
-========================= */
 
 async function downloadPDF(){
 
@@ -3595,9 +1615,6 @@ const state = await prepareCVExport()
 showIsland('Generating PDF...')
 setProgress(35)
 
-await document.fonts.ready
-
-await wait(300)
 const canvas =
 await createHighQualityCanvas()
 
@@ -3615,7 +1632,6 @@ format:'a4'
 })
 
 const pdfWidth = 210
-const pdfHeight = 297
 
 const ratio =
 canvas.height / canvas.width
@@ -3658,10 +1674,6 @@ hideIsland()
 }
 
 }
-
-/* =========================
-DOWNLOAD JPG
-========================= */
 
 async function downloadJPG(){
 
@@ -3717,10 +1729,6 @@ hideIsland()
 
 }
 
-/* =========================
-DOWNLOAD PNG
-========================= */
-
 async function downloadPNG(){
 
 try{
@@ -3775,57 +1783,21 @@ hideIsland()
 
 }
 
-/* =========================
-KEYBOARD SHORTCUT
-========================= */
-
 document.addEventListener('keydown',(e)=>{
-
-/* CTRL + S */
 
 if((e.ctrlKey || e.metaKey)
 && e.key === 's'){
 
 e.preventDefault()
-
 downloadPDF()
-
-}
-
-/* CTRL + + */
-
-if((e.ctrlKey || e.metaKey)
-&& e.key === '='){
-
-e.preventDefault()
-
-zoomIn()
-
-}
-
-/* CTRL + - */
-
-if((e.ctrlKey || e.metaKey)
-&& e.key === '-'){
-
-e.preventDefault()
-
-zoomOut()
 
 }
 
 })
 
-/* =========================
-INIT
-========================= */
-
 loadData()
-
 updateCV()
-
 autoResize()
-
 applyZoom()
 
 </script>
