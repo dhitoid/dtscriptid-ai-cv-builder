@@ -1451,6 +1451,232 @@ transform:scale(1);
 
 }
 
+.modern-layout{
+display:grid;
+grid-template-columns:320px 1fr;
+min-height:297mm;
+}
+
+.modern-sidebar{
+background:linear-gradient(180deg,#7c3aed,#4f46e5);
+padding:50px 30px;
+color:white;
+}
+
+.modern-main{
+padding:50px;
+background:white;
+}
+
+.minimal-layout{
+padding:70px;
+background:white;
+color:#111827;
+}
+
+.minimal-header{
+margin-bottom:50px;
+}
+
+.minimal-header h1{
+font-size:58px;
+font-weight:900;
+}
+
+.minimal-header h2{
+font-size:24px;
+color:#666;
+margin-top:10px;
+}
+
+.minimal-contact{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+margin-top:20px;
+font-size:14px;
+}
+
+.minimal-section{
+margin-bottom:45px;
+}
+
+.minimal-section h3{
+font-size:14px;
+letter-spacing:2px;
+margin-bottom:14px;
+}
+
+.editorial-layout{
+display:grid;
+grid-template-columns:320px 1fr;
+min-height:297mm;
+}
+
+.editorial-left{
+padding:60px 40px;
+background:#faf7f2;
+}
+
+.editorial-right{
+padding:70px;
+}
+
+.editorial-name{
+font-size:70px;
+font-weight:900;
+line-height:.9;
+}
+
+.editorial-role{
+margin-top:20px;
+font-size:20px;
+color:#666;
+}
+
+.editorial-avatar{
+width:100%;
+border-radius:30px;
+margin-top:40px;
+}
+
+.editorial-block{
+margin-bottom:45px;
+}
+
+.editorial-block h4{
+font-size:13px;
+letter-spacing:3px;
+margin-bottom:15px;
+}
+
+.apple-layout{
+padding:70px;
+background:white;
+}
+
+.apple-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:50px;
+}
+
+.apple-avatar{
+width:130px;
+height:130px;
+border-radius:40px;
+object-fit:cover;
+}
+
+.apple-name{
+font-size:70px;
+font-weight:900;
+letter-spacing:-4px;
+}
+
+.apple-job{
+font-size:24px;
+color:#666;
+margin-top:10px;
+}
+
+.apple-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:30px;
+}
+
+.apple-box{
+padding:35px;
+background:#f5f5f7;
+border-radius:35px;
+}
+
+.apple-box h3{
+font-size:13px;
+letter-spacing:3px;
+margin-bottom:18px;
+}
+
+.apple-skills{
+margin-top:30px;
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+}
+
+.spotify-layout{
+padding:60px;
+background:#121212;
+color:white;
+min-height:297mm;
+}
+
+.spotify-top{
+display:flex;
+align-items:center;
+gap:30px;
+margin-bottom:50px;
+}
+
+.spotify-avatar{
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+}
+
+.spotify-name{
+font-size:64px;
+font-weight:900;
+color:#1DB954;
+}
+
+.spotify-role{
+font-size:22px;
+opacity:.7;
+}
+
+.spotify-section{
+margin-bottom:45px;
+}
+
+.spotify-section h3{
+color:#1DB954;
+margin-bottom:14px;
+}
+
+.spotify-layout .tag{
+background:#1DB954;
+color:black;
+}
+
+.notion-layout{
+padding:70px;
+background:white;
+color:#111;
+}
+
+.notion-header{
+margin-bottom:50px;
+}
+
+.notion-name{
+font-size:58px;
+font-weight:900;
+}
+
+.notion-role{
+font-size:22px;
+color:#666;
+margin-top:10px;
+}
+
+.notion-section{
+margin-bottom:45px;
+}
+
 </style>
 </head>
 
@@ -2067,10 +2293,6 @@ PREVIEW
 
 <div class="cv modern" id="cv">
 
-<!-- SIDEBAR -->
-
-<div class="cv-sidebar" id="cvSidebar">
-
 <img
 crossorigin="anonymous"
 src="https://i.ibb.co/4pDNDk1/avatar.png"
@@ -2130,7 +2352,7 @@ CSS
 
 <!-- MAIN -->
 
-<div class="cv-main" id="cvMain">
+<div class="cv modern" id="cv"></div>
 
 <div class="section">
 
@@ -2323,115 +2545,25 @@ skills:
 (getValue('skills') || defaults.skills)
 .split(',')
 .map(skill=>`<span class="tag">${skill.trim()}</span>`)
-.join('')
+.join(''),
+
+avatar:
+localStorage.getItem('dtscript_avatar')
+|| 'https://i.ibb.co/4pDNDk1/avatar.png'
 
 }
 
-if(type === 'minimal'){
+/* =========================
+MODERN
+========================= */
 
-cv.innerHTML = `
-<div class="minimal-wrap">
+const modernTemplate = `
 
-<div class="minimal-top">
+<div class="modern-layout">
 
-<h1>${data.name}</h1>
+<div class="modern-sidebar">
 
-<h2>${data.job}</h2>
-
-<div class="minimal-contact">
-${data.email} • ${data.phone} • ${data.location}
-</div>
-
-</div>
-
-<div class="minimal-section">
-<h3>About</h3>
-<p>${data.summary}</p>
-</div>
-
-<div class="minimal-section">
-<h3>Experience</h3>
-<p>${data.experience}</p>
-</div>
-
-<div class="minimal-section">
-<h3>Education</h3>
-<p>${data.education}</p>
-</div>
-
-<div class="minimal-section">
-<h3>Skills</h3>
-
-<div class="skills">
-${data.skills}
-</div>
-
-</div>
-
-</div>
-`
-
-}
-
-else if(type === 'editorial'){
-
-cv.innerHTML = `
-<div class="editorial-wrap">
-
-<div class="editorial-left">
-
-<div class="editorial-big-name">
-${data.name}
-</div>
-
-<div class="editorial-job">
-${data.job}
-</div>
-
-</div>
-
-<div class="editorial-right">
-
-<div class="editorial-block">
-<h4>ABOUT</h4>
-<p>${data.summary}</p>
-</div>
-
-<div class="editorial-block">
-<h4>EXPERIENCE</h4>
-<p>${data.experience}</p>
-</div>
-
-<div class="editorial-block">
-<h4>EDUCATION</h4>
-<p>${data.education}</p>
-</div>
-
-<div class="editorial-block">
-<h4>SKILLS</h4>
-
-<div class="skills">
-${data.skills}
-</div>
-
-</div>
-
-</div>
-
-</div>
-`
-
-}
-
-else{
-
-cv.innerHTML = `
-<div class="cv-sidebar">
-
-<img
-src="${avatar.src}"
-class="avatar"
-/>
+<img src="${data.avatar}" class="avatar">
 
 <div class="cv-name">
 ${data.name}
@@ -2475,7 +2607,7 @@ ${data.skills}
 
 </div>
 
-<div class="cv-main">
+<div class="modern-main">
 
 <div class="section">
 
@@ -2508,11 +2640,438 @@ Education
 </div>
 
 </div>
+
+</div>
+
 `
+
+/* =========================
+MINIMAL
+========================= */
+
+const minimalTemplate = `
+
+<div class="minimal-layout">
+
+<div class="minimal-header">
+
+<h1>
+${data.name}
+</h1>
+
+<h2>
+${data.job}
+</h2>
+
+<div class="minimal-contact">
+
+<span>${data.email}</span>
+
+<span>${data.phone}</span>
+
+<span>${data.location}</span>
+
+</div>
+
+</div>
+
+<div class="minimal-section">
+
+<h3>
+About
+</h3>
+
+<p>
+${data.summary}
+</p>
+
+</div>
+
+<div class="minimal-section">
+
+<h3>
+Experience
+</h3>
+
+<p>
+${data.experience}
+</p>
+
+</div>
+
+<div class="minimal-section">
+
+<h3>
+Education
+</h3>
+
+<p>
+${data.education}
+</p>
+
+</div>
+
+<div class="minimal-section">
+
+<h3>
+Skills
+</h3>
+
+<div class="skills">
+${data.skills}
+</div>
+
+</div>
+
+</div>
+
+`
+
+/* =========================
+EDITORIAL
+========================= */
+
+const editorialTemplate = `
+
+<div class="editorial-layout">
+
+<div class="editorial-left">
+
+<div class="editorial-name">
+${data.name}
+</div>
+
+<div class="editorial-role">
+${data.job}
+</div>
+
+<img src="${data.avatar}" class="editorial-avatar">
+
+</div>
+
+<div class="editorial-right">
+
+<div class="editorial-block">
+
+<h4>
+ABOUT
+</h4>
+
+<p>
+${data.summary}
+</p>
+
+</div>
+
+<div class="editorial-block">
+
+<h4>
+EXPERIENCE
+</h4>
+
+<p>
+${data.experience}
+</p>
+
+</div>
+
+<div class="editorial-block">
+
+<h4>
+EDUCATION
+</h4>
+
+<p>
+${data.education}
+</p>
+
+</div>
+
+<div class="editorial-block">
+
+<h4>
+SKILLS
+</h4>
+
+<div class="skills">
+${data.skills}
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+`
+
+/* =========================
+APPLE
+========================= */
+
+const appleTemplate = `
+
+<div class="apple-layout">
+
+<div class="apple-header">
+
+<div>
+
+<div class="apple-name">
+${data.name}
+</div>
+
+<div class="apple-job">
+${data.job}
+</div>
+
+</div>
+
+<img src="${data.avatar}" class="apple-avatar">
+
+</div>
+
+<div class="apple-grid">
+
+<div class="apple-box">
+
+<h3>
+ABOUT
+</h3>
+
+<p>
+${data.summary}
+</p>
+
+</div>
+
+<div class="apple-box">
+
+<h3>
+CONTACT
+</h3>
+
+<p>
+${data.email}
+<br><br>
+${data.phone}
+<br><br>
+${data.location}
+</p>
+
+</div>
+
+<div class="apple-box">
+
+<h3>
+EXPERIENCE
+</h3>
+
+<p>
+${data.experience}
+</p>
+
+</div>
+
+<div class="apple-box">
+
+<h3>
+EDUCATION
+</h3>
+
+<p>
+${data.education}
+</p>
+
+</div>
+
+</div>
+
+<div class="apple-skills">
+
+${data.skills}
+
+</div>
+
+</div>
+
+`
+
+/* =========================
+SPOTIFY
+========================= */
+
+const spotifyTemplate = `
+
+<div class="spotify-layout">
+
+<div class="spotify-top">
+
+<img src="${data.avatar}" class="spotify-avatar">
+
+<div>
+
+<div class="spotify-name">
+${data.name}
+</div>
+
+<div class="spotify-role">
+${data.job}
+</div>
+
+</div>
+
+</div>
+
+<div class="spotify-section">
+
+<h3>
+ABOUT
+</h3>
+
+<p>
+${data.summary}
+</p>
+
+</div>
+
+<div class="spotify-section">
+
+<h3>
+EXPERIENCE
+</h3>
+
+<p>
+${data.experience}
+</p>
+
+</div>
+
+<div class="spotify-section">
+
+<h3>
+EDUCATION
+</h3>
+
+<p>
+${data.education}
+</p>
+
+</div>
+
+<div class="spotify-section">
+
+<h3>
+SKILLS
+</h3>
+
+<div class="skills">
+${data.skills}
+</div>
+
+</div>
+
+</div>
+
+`
+
+/* =========================
+NOTION
+========================= */
+
+const notionTemplate = `
+
+<div class="notion-layout">
+
+<div class="notion-header">
+
+<div class="notion-name">
+${data.name}
+</div>
+
+<div class="notion-role">
+${data.job}
+</div>
+
+</div>
+
+<div class="notion-section">
+
+<div class="section-title">
+About
+</div>
+
+<p>
+${data.summary}
+</p>
+
+</div>
+
+<div class="notion-section">
+
+<div class="section-title">
+Experience
+</div>
+
+<p>
+${data.experience}
+</p>
+
+</div>
+
+<div class="notion-section">
+
+<div class="section-title">
+Education
+</div>
+
+<p>
+${data.education}
+</p>
+
+</div>
+
+<div class="notion-section">
+
+<div class="section-title">
+Skills
+</div>
+
+<div class="skills">
+${data.skills}
+</div>
+
+</div>
+
+</div>
+
+`
+
+/* =========================
+MAP TEMPLATE
+========================= */
+
+const templates = {
+
+modern:modernTemplate,
+minimal:minimalTemplate,
+editorial:editorialTemplate,
+apple:appleTemplate,
+spotify:spotifyTemplate,
+notion:notionTemplate,
+
+creative:modernTemplate,
+glass:modernTemplate,
+luxe:modernTemplate,
+tokyo:modernTemplate,
+neon:modernTemplate
 
 }
 
 cv.className = `cv ${type}`
+
+cv.innerHTML =
+templates[type] || modernTemplate
 
 }
 
